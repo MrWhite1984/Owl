@@ -26,7 +26,9 @@ services:
       - ConfHubNet
 
   sibadi-conf-hub:
-    build: ./backend
+    build: 
+      context: .
+      dockerfile: backend/Dockerfile
     container_name: confhub-backend
     ports:
       - "8080:8080"
@@ -41,6 +43,18 @@ services:
     depends_on:
       - postgres-data
       - minio
+    networks:
+      - ConfHubNet
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: confhub-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - sibadi-conf-hub
     networks:
       - ConfHubNet
 
