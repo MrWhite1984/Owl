@@ -7,5 +7,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PeopleRepository extends JpaRepository<People, UUID> {
-    Optional<People> findByEmailAndPassword(String email, String password);
+    Optional<People> findByEmail(String email);
 }
