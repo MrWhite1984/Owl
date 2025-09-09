@@ -11,9 +11,6 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "people")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class People {
 
     @Id
@@ -77,7 +74,7 @@ public class People {
                   String phone,
                   String email,
                   String password,
-                  boolean isVerified){
+                  Set<Roles> roles){
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;
@@ -87,7 +84,10 @@ public class People {
         this.phone = phone;
         this.email = email;
         this.password = password;
-        this.isVerified = isVerified;
+        this.roles = roles;
+    }
+
+    public People() {
     }
 
     public UUID getId() {

@@ -34,6 +34,9 @@ public class News {
         this.dateTime = dateTime;
     }
 
+    public News() {
+    }
+
     public UUID getId() {
         return id;
     }

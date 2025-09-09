@@ -67,6 +67,9 @@ public class Projects {
         this.section = section;
     }
 
+    public Projects() {
+    }
+
     public UUID getId() {
         return id;
     }

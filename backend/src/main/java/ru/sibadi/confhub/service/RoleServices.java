@@ -6,6 +6,9 @@ import ru.sibadi.confhub.entity.Roles;
 import ru.sibadi.confhub.repository.PeopleRepository;
 import ru.sibadi.confhub.repository.RolesRepository;
 
+import java.util.Optional;
+import java.util.Set;
+
 @Service
 public class RoleServices {
 
@@ -18,6 +21,11 @@ public class RoleServices {
     public Roles createRole(Roles role){
         Roles savedRole = rolesRepository.save(role);
         return savedRole;
+    }
+
+    public Set<Roles> getRolesByTitles(Set<String> rolesTitles){
+        Optional<Set<Roles>> optRoles = rolesRepository.findByTitleIn(rolesTitles);
+        return optRoles.get();
     }
 
 }

@@ -41,6 +41,9 @@ public class Conferences {
         this.fullText = fullText;
     }
 
+    public Conferences() {
+    }
+
     public UUID getId() {
         return id;
     }

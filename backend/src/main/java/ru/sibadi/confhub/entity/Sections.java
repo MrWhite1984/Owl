@@ -25,6 +25,9 @@ public class Sections {
         this.conference = conference;
     }
 
+    public Sections() {
+    }
+
     public UUID getId() {
         return id;
     }

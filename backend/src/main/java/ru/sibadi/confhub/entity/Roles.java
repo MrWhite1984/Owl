@@ -25,6 +25,9 @@ public class Roles {
         this.title = title;
     }
 
+    public Roles() {
+    }
+
     public UUID getId() {
         return id;
     }

@@ -35,6 +35,9 @@ public class ProjectMessage {
         this.dateTime = dateTime;
     }
 
+    public ProjectMessage() {
+    }
+
     public UUID getId() {
         return id;
     }
