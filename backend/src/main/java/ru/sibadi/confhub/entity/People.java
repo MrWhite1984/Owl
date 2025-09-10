@@ -65,6 +65,9 @@ public class People {
     @OneToMany (mappedBy = "author", fetch = FetchType.LAZY)
     private Set<News> news = new HashSet<>();
 
+    @Column (name="profile_photo", updatable = true, nullable = true)
+    private String profilePhoto;
+
     public People(String surname,
                   String name,
                   String patronymic,
@@ -138,11 +141,19 @@ public class People {
         return roles;
     }
 
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
     }
 }

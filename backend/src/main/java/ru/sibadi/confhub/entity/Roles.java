@@ -15,7 +15,7 @@ public class Roles {
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-    @Column(updatable = true, nullable = false)
+    @Column(updatable = true, nullable = false, unique = true)
     private String title;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
