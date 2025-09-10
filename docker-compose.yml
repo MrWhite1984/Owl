@@ -69,6 +69,7 @@ services:
       - sibadi-conf-hub
     networks:
       - ConfHubNet
+    restart: unless-stopped
 
 networks:
   ConfHubNet:

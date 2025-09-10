@@ -10,8 +10,8 @@ import ru.sibadi.confhub.dto.RoleRequest;
 import ru.sibadi.confhub.entity.Roles;
 import ru.sibadi.confhub.service.RoleServices;
 
-@RestController
-@RequestMapping("/api/roles/")
+//@RestController
+//@RequestMapping("/api/roles/")
 public class RoleController {
 
     @Autowired

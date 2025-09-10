@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.sibadi.confhub.dto.LoginRequest;
 import ru.sibadi.confhub.dto.PeopleRequest;
 import ru.sibadi.confhub.dto.SessionResponse;
+import ru.sibadi.confhub.dto.TokenRequest;
 import ru.sibadi.confhub.entity.People;
 import ru.sibadi.confhub.service.PeopleServices;
 import ru.sibadi.confhub.service.RedisSessionService;
@@ -59,4 +60,9 @@ public class PeopleController {
         }
     }
 
+    @GetMapping("/getRoles")
+    public ResponseEntity<?> getRoles(@RequestBody TokenRequest request){
+        People people = peopleServices.getPeopleById(redisSessionService.getUserIdBySessionToken(request.getToken()));
+        return ResponseEntity.ok(people.getRoles());
+    }
 }

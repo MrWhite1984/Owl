@@ -1,15 +1,12 @@
-FROM node:18-alpine AS builder
+FROM php:8.2-apache
 
-WORKDIR /app
+RUN apt-get update && apt-get install -y \
+    libcurl4-openssl-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
+RUN docker-php-ext-install curl
 
-FROM nginx:alpine
-COPY --from=builder /app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
+COPY pages/ /var/www/html/
 
-CMD ["nginx", "-g", "daemon off;"]
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
