@@ -39,7 +39,7 @@ public class People {
     @Column(updatable = true, nullable = false)
     private String phone;
 
-    @Column(updatable = true, nullable = false)
+    @Column(updatable = true, nullable = false, unique = true)
     private String email;
 
     @Column(updatable = true, nullable = false)

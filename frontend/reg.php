@@ -1,3 +1,60 @@
+<?php
+    session_start();
+
+    if($_POST){
+            $api_url = "http://sibadi-conf-hub:8080/api/people/registration";
+
+            $payload = json_encode([
+                    "surname" => $_POST["surname"],
+                    "name" => $_POST["name"],
+                    "patronymic" => empty($_POST["patronymic"]) ? "" : $_POST["patronymic"],
+                    "educationalInstitution" => $_POST["educational-institution"],
+                    "jobTitle" => $_POST["job-title"],
+                    "city" => $_POST["city"],
+                    "phone" => $_POST["phone"],
+                    "email" => $_POST["email"],
+                    "password" => $_POST["pass"],
+                    "eLibLink" => empty($_POST["e-lib-link"]) ? "" : $_POST["e-lib-link"],
+                    "roles" => ["USER"]
+                ]);
+
+            $ch = curl_init($api_url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "Content-Type: application/json",
+                "Accept: application/json"
+            ]);
+
+            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+            $response = curl_exec($ch);
+            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if($http_code !== 200){
+                switch ($http_code){
+                    case 409:
+                        echo "<h2>Ошибка! Пользователь с таким почтовым адресом уже существует!</h2>";
+                        break;
+                    case 500:
+                        echo "<h2>Ошибка сервера!</h2>";
+                        break;
+                }
+            }
+            else{
+                $response_data = json_decode($response, true);
+                $token = $response_data["sessionToken"];
+
+                $_SESSION["token"] = $token;
+
+                header('Location: /select_role.php');
+                exit;
+            }
+
+        }
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -36,39 +93,5 @@
         </form>
     </main>
     <script src="scripts/reg.js"></script>
-    <?php
-        if($_POST){
-            $api_url = "http://sibadi-conf-hub:8080/api/people/registration";
-
-            $payload = json_encode([
-                    "surname" => $_POST["surname"],
-                    "name" => $_POST["name"],
-                    "patronymic" => empty($_POST["patronymic"]) ? "" : $_POST["patronymic"],
-                    "educationalInstitution" => $_POST["educational-institution"],
-                    "jobTitle" => $_POST["job-title"],
-                    "city" => $_POST["city"],
-                    "phone" => $_POST["phone"],
-                    "email" => $_POST["email"],
-                    "password" => $_POST["pass"],
-                    "eLibLink" => empty($_POST["e-lib-link"]) ? "" : $_POST["e-lib-link"],
-                    "roles" => ["USER"]
-                ]);
-
-            $ch = curl_init($api_url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                "Content-Type: application/json",
-                "Content-Length: " . strlen($payload)
-            ]);
-
-            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-            $response = curl_exec($ch);
-            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-
-        }
-    ?>
 </body>
 </html>

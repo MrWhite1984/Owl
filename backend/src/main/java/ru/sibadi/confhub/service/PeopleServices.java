@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.sibadi.confhub.entity.People;
+import ru.sibadi.confhub.exceptions.EmailAlreadyExistsException;
 import ru.sibadi.confhub.repository.PeopleRepository;
 
 import java.util.HashSet;
@@ -24,6 +25,8 @@ public class PeopleServices {
     private RoleServices roleServices;
 
     public People createPeople(People people){
+        if(peopleRepository.existsByEmail(people.getEmail()))
+            throw new EmailAlreadyExistsException(people.getEmail());
         people.setPassword(passwordEncoder.encode(people.getPassword()));
         if(peopleRepository.count() == 0) {
             Set<String> roles = Set.of("ADMIN", "MODER", "USER");
