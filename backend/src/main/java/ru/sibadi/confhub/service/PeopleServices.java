@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import ru.sibadi.confhub.entity.People;
 import ru.sibadi.confhub.repository.PeopleRepository;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -18,8 +20,15 @@ public class PeopleServices {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private RoleServices roleServices;
+
     public People createPeople(People people){
         people.setPassword(passwordEncoder.encode(people.getPassword()));
+        if(peopleRepository.count() == 0) {
+            Set<String> roles = Set.of("ADMIN", "MODER", "USER");
+            people.setRoles(roleServices.getRolesByTitles((roles)));
+        }
         People savePeople = peopleRepository.save(people);
         return savePeople;
     }

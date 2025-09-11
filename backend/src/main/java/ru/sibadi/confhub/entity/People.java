@@ -161,4 +161,8 @@ public class People {
     public void setProfilePhoto(String profilePhoto) {
         this.profilePhoto = profilePhoto;
     }
+
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
+    }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Регистрация</title>
 </head>
 <body>
     <main>
@@ -43,10 +43,15 @@
             $payload = json_encode([
                     "surname" => $_POST["surname"],
                     "name" => $_POST["name"],
-                    "patronymic" => empty($_POST) ? "" : $_POST["patronymic"],
+                    "patronymic" => empty($_POST["patronymic"]) ? "" : $_POST["patronymic"],
                     "educationalInstitution" => $_POST["educational-institution"],
                     "jobTitle" => $_POST["job-title"],
-                    "city" => $_POST["city"] 
+                    "city" => $_POST["city"],
+                    "phone" => $_POST["phone"],
+                    "email" => $_POST["email"],
+                    "password" => $_POST["pass"],
+                    "eLibLink" => empty($_POST["e-lib-link"]) ? "" : $_POST["e-lib-link"],
+                    "roles" => ["USER"]
                 ]);
 
             $ch = curl_init($api_url);
@@ -62,6 +67,7 @@
             $response = curl_exec($ch);
             $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
+
         }
     ?>
 </body>
