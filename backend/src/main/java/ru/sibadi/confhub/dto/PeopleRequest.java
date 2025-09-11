@@ -13,6 +13,7 @@ public class PeopleRequest {
     private String email;
     private String password;
     private Set<String> roles;
+    private String eLibLink;
 
     public String getSurname() {
         return surname;
@@ -52,5 +53,9 @@ public class PeopleRequest {
 
     public Set<String> getRoles() {
         return roles;
+    }
+
+    public String geteLibLink() {
+        return eLibLink;
     }
 }

@@ -68,6 +68,9 @@ public class People {
     @Column (name="profile_photo", updatable = true, nullable = true)
     private String profilePhoto;
 
+    @Column (name="e_lib_link", updatable = true, nullable = true)
+    private String eLibLink;
+
     public People(String surname,
                   String name,
                   String patronymic,
@@ -77,7 +80,8 @@ public class People {
                   String phone,
                   String email,
                   String password,
-                  Set<Roles> roles){
+                  Set<Roles> roles,
+                  String eLibLink){
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;
@@ -88,6 +92,7 @@ public class People {
         this.email = email;
         this.password = password;
         this.roles = roles;
+        this.eLibLink = eLibLink;
     }
 
     public People() {

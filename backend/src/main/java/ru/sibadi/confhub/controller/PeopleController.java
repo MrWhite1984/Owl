@@ -2,6 +2,8 @@ package ru.sibadi.confhub.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.junit.platform.commons.logging.Logger;
+import org.junit.platform.commons.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -29,10 +31,11 @@ public class PeopleController {
     @Autowired
     private RedisSessionService redisSessionService;
 
-
+    private static final Logger log = LoggerFactory.getLogger(PeopleController.class);
 
     @PostMapping("/registration")
     public ResponseEntity<People> createPeople(@RequestBody PeopleRequest request){
+        log.info(()->"Invoked Registration");
         People people = new People(
                 request.getSurname(),
                 request.getName(),
@@ -43,7 +46,8 @@ public class PeopleController {
                 request.getPhone(),
                 request.getEmail(),
                 request.getPassword(),
-                roleServices.getRolesByTitles(request.getRoles())
+                roleServices.getRolesByTitles(request.getRoles()),
+                request.geteLibLink()
         );
         People savedPeople = peopleServices.createPeople(people);
         return ResponseEntity.ok(savedPeople);
