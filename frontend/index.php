@@ -1,7 +1,7 @@
 <?php 
     session_start();
 
-    if(empty($_SESSION["token"])){
+    if(empty($_SESSION["token"]) || empty($_SESSION["selected_role"])){
         $token_is_valid = false;
     }
     else{
@@ -44,7 +44,7 @@
 <body>
     <?php
         if($token_is_valid){
-
+            include 'elements/authed_header.php';
         }
         else{
             include 'elements/unauthed_header.php';

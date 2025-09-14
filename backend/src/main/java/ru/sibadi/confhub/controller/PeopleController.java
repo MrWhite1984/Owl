@@ -76,9 +76,17 @@ public class PeopleController {
 
     @PostMapping("/getRoles")
     public ResponseEntity<?> getRoles(@RequestBody TokenRequest request){
-        if(redisSessionService.getUserIdBySessionToken(request.getToken()) != null)
+        if(redisSessionService.getUserIdBySessionToken(request.getToken()) == null)
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("The token is expired or does not exist");
         People people = peopleServices.getPeopleById(redisSessionService.getUserIdBySessionToken(request.getToken()));
         return ResponseEntity.ok(people.getRoles());
+    }
+
+    @PostMapping("/getPeopleLight")
+    public ResponseEntity<?> getPeopleLight(@RequestBody TokenRequest request){
+        if(redisSessionService.getUserIdBySessionToken(request.getToken()) == null)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("The token is expired or does not exist");
+        People people = peopleServices.getPeopleById(redisSessionService.getUserIdBySessionToken(request.getToken()));
+        return ResponseEntity.ok(new PeopleLightResponse(people.getSurname(), people.getName(), people.isVerified(), people.getProfilePhoto()));
     }
 }
