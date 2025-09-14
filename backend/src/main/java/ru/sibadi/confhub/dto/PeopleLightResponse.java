@@ -12,5 +12,20 @@ public class PeopleLightResponse {
         this.isVerified = isVerified;
         this.profilePhoto = profilePhoto;
     }
-    
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
 }

@@ -8,6 +8,7 @@ import ru.sibadi.confhub.repository.RolesRepository;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class RoleServices {
@@ -26,6 +27,11 @@ public class RoleServices {
     public Set<Roles> getRolesByTitles(Set<String> rolesTitles){
         Optional<Set<Roles>> optRoles = rolesRepository.findByTitleIn(rolesTitles);
         return optRoles.get();
+    }
+
+    public Roles getRoleById(String id){
+        Optional<Roles> optRole = rolesRepository.findById(UUID.fromString(id));
+        return optRole.get();
     }
 
 }
