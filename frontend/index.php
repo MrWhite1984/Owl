@@ -63,7 +63,32 @@
         $full_rights = ["ADMIN"];
         $moders_rights = ["ADMIN", "MODER"];
         $user_rights = ["ADMIN", "MODER", "USER"];
+
+        $api_url = "http://sibadi-conf-hub:8080/api/people/getPeopleLight";
+    $payload = json_encode([
+        "token" => $token
+    ]);
+    $ch = curl_init($api_url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        "Content-Type: application/json",
+        "Accept: application/json"
+    ]);
+
+    $peopleData = null;
+
+    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+    $response = curl_exec($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    if($http_code !== 200){
     }
+    else{
+        $peopleData = json_decode($response);
+    } 
+    }    
     ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -72,7 +97,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Главная</title>
     <link rel="stylesheet" href="styles/index.css">
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="styles/nav.css">
+    <link rel="stylesheet" href="styles/header.css">
 </head>
 <body>
     <?php
@@ -91,13 +117,13 @@
                 if($token_is_valid){
                     $hour = (int)date('H');
                     if ($hour >= 6 && $hour < 12) {
-                        $greeting = "Доброе утро";
+                        $greeting = "Доброе утро, " . htmlspecialchars($peopleData->surname). " ". htmlspecialchars($peopleData->name);
                     } elseif ($hour >= 12 && $hour < 18) {
-                        $greeting = "Добрый день";
+                        $greeting = "Добрый день, " . htmlspecialchars($peopleData->surname). " ". htmlspecialchars($peopleData->name);
                     } elseif ($hour >= 18 && $hour < 23) {
-                        $greeting = "Добрый вечер";
+                        $greeting = "Добрый вечер, " . htmlspecialchars($peopleData->surname). " ". htmlspecialchars($peopleData->name);
                     } else {
-                        $greeting = "Доброй ночи";
+                        $greeting = "Доброй ночи, " . htmlspecialchars($peopleData->surname). " ". htmlspecialchars($peopleData->name);
                     }   
 
                     echo "<h1>".$greeting."</h1>";

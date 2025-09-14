@@ -87,7 +87,12 @@ public class PeopleController {
         if(redisSessionService.getUserIdBySessionToken(request.getToken()) == null)
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("The token is expired or does not exist");
         People people = peopleServices.getPeopleById(redisSessionService.getUserIdBySessionToken(request.getToken()));
-        PeopleLightResponse response = new PeopleLightResponse(people.getSurname(), people.getName(), people.isVerified(), people.getProfilePhoto());
+        PeopleLightResponse response = new PeopleLightResponse(
+                people.getSurname(),
+                people.getName(),
+                people.isVerified(),
+                people.getProfilePhoto(),
+                people.getJobTitle());
         return ResponseEntity.ok(response);
     }
 }

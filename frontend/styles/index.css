@@ -8,125 +8,13 @@
 body{
 }
 
-header{
-    background-color: #2B4E84;
-    color: aliceblue;
-    height: 70px;
-    display: flex;
-    flex-direction: row;
-}
 
-.space-div{
-    width: 100%;
-}
-
-.nav-btn-div{
-    margin-top: 10px;
-    margin-left: 20px;
-    height: 50px;
-    width: 50px;
-}
-
-#nav-btn{
-    height: 100%;
-    width: 100%;
-    background-color: transparent;
-    border: 0px;
-    color: aliceblue;
-    font-size: 30px;
-    font-weight: 700;
-    border-radius: 25%;
-}
-
-#nav-btn:hover{
-    background-color: #3E65A0;
-}
-
-#nav-btn:hover{
-    cursor: pointer;
-}
-
-.login-link-div{
-    height: 100%;
-    margin-top: 27px;
-}
-
-.login-link{
-    color: aliceblue;
-    font-size: 16px;
-    font-weight: 700;
-    margin-right: 20px;   
-}
-
-.notify-btn-block{    
-    margin-top: 10px;
-    margin-left: 20px;
-    height: 50px;
-    width: 50px;
-}
-
-.ntfy-btn{
-    height: 100%;
-    width: 100%;
-    background-color: transparent;
-    border: 0px;
-    color: aliceblue;
-    font-size: 20px;
-    font-weight: 700;
-    border-radius: 25%;
-}
-
-.ntfy-btn:hover{
-    cursor: pointer;
-    background-color: #3E65A0;
-}
-
-.ntfy-bell{
-    color: transparent;
-    text-shadow: 0 0 0 white;
-    display: inline-block;
-}
 
 .container{
     margin: 30px;
 }
 
-.sidebar-container{
-    height: 100%;
-    width: 100%;
-    display: none;
-    z-index: 9999;
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.5);
-}
 
-.nav-link{
-    display: block;
-    width: 15%;
-}
-
-.nav-element{
-    text-decoration: none;
-    height: 60px;
-    width: 100%;
-    font-size: 16px;
-    color: aliceblue;
-    background-color: #2B4E84;
-    border-top: 0.5px solid aliceblue;
-    border-bottom: 0.5px solid aliceblue;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.nav-element:hover{
-    background-color: #3E65A0;
-}
-
-.header-usr-card{
-    width: 140px;
-}
 
 footer{
     background-color: darkgray;
