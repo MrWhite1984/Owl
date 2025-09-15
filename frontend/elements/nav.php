@@ -4,7 +4,7 @@
             <a class="nav-link" href="../index.php">
                 <div class="nav-element">Главная</div>
             </a>
-            <a class="nav-link" href="">
+            <a class="nav-link" href="../conditions_for_participation.php">
                 <div class="nav-element">Условия участия</div>
             </a>
             <a class="nav-link" href="">
@@ -20,7 +20,7 @@
             <a class="nav-link" href="../index.php">
                 <div class="nav-element">Главная</div>
             </a>
-            <a class="nav-link" href="">
+            <a class="nav-link" href="../conditions_for_participation.php">
                 <div class="nav-element">Условия участия</div>
             </a>
             <a class="nav-link" href="">
@@ -45,7 +45,7 @@
             <a class="nav-link" href="../index.php">
                 <div class="nav-element">Главная</div>
             </a>
-            <a class="nav-link" href="">
+            <a class="nav-link" href="../conditions_for_participation.php">
                 <div class="nav-element">Условия участия</div>
             </a>
             <a class="nav-link" href="">
@@ -70,7 +70,7 @@
             <a class="nav-link" href="../index.php">
                 <div class="nav-element">Главная</div>
             </a>
-            <a class="nav-link" href="">
+            <a class="nav-link" href="../conditions_for_participation.php">
                 <div class="nav-element">Условия участия</div>
             </a>
             <a class="nav-link" href="">

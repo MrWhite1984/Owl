@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: darkgray;
+}
+
+.btn {
+    background-color: #2B4E84;
+    height: 50px;
+    font-size: 16px;
+    color: aliceblue;
+    border-radius: 15px;
+    border: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.btn:hover {
+    background-color: #3E65A0;
+    cursor: pointer;
+}
+
+main {
+    padding: 30px;
+    background-color: aliceblue;
+}
+
+p{
+    tab-size: 16px;
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

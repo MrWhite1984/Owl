@@ -130,6 +130,7 @@ if (!empty($_POST["active-method"])) {
     <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="styles/nav.css">
     <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/footer.css">
 </head>
 
 <body>
