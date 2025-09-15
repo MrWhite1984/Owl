@@ -6,6 +6,7 @@
 }
 
 body{
+    background-color: darkgray;
 }
 
 .btn{
@@ -33,7 +34,20 @@ main{
     display: none;
 }
 
+.news-item{
+    padding: 15px;
+    width: 100%;
+    border: 1px solid #2B4E84;
+    border-radius: 15px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
 
+.usr-card-news-photo{
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+}
 
 footer{
     background-color: darkgray;

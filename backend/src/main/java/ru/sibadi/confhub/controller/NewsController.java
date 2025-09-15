@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.sibadi.confhub.dto.NewsPageRequest;
 import ru.sibadi.confhub.dto.NewsRequest;
 import ru.sibadi.confhub.dto.NewsResponse;
 import ru.sibadi.confhub.entity.News;
@@ -13,7 +14,8 @@ import ru.sibadi.confhub.service.NewsService;
 import ru.sibadi.confhub.service.PeopleServices;
 import ru.sibadi.confhub.service.RedisSessionService;
 
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/news/")
@@ -30,7 +32,6 @@ public class NewsController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createNews(@RequestBody NewsRequest request){
-        //получать надо токен
         News news = new News(
                 request.getTitle(),
                 request.getData(),
@@ -42,5 +43,22 @@ public class NewsController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/getPage")
+    public ResponseEntity<?> getNewsPage(@RequestBody NewsPageRequest request){
+        Set<News> news = newsService.getNews(request.getPageNumber(), request.getPageSize());
+        List<News> list = new ArrayList<>(news);
+        Collections.reverse(list);
+        news = new LinkedHashSet<>(list);
+        Set<NewsResponse> response = new LinkedHashSet<>();
+        for(News element: news){
+            NewsResponse item = new NewsResponse(
+                    element.getTitle(),
+                    element.getData(),
+                    element.getAuthor(),
+                    element.getDateTime());
+            response.add(item);
+        }
+        return ResponseEntity.ok(response);
+    }
 
 }

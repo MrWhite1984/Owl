@@ -8,6 +8,7 @@ import ru.sibadi.confhub.entity.News;
 import ru.sibadi.confhub.repository.NewsRepository;
 
 import java.sql.Timestamp;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Service
@@ -23,6 +24,6 @@ public class NewsService {
 
     public Set<News> getNews(int pageNumber, int pageSize){
         Page<News> page = newsRepository.findAll(PageRequest.of(pageNumber, pageSize));
-        return page.toSet();
+        return new LinkedHashSet<>(page.getContent());
     }
 }
