@@ -52,26 +52,40 @@ else {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Выберите роль</title>
+    <link rel="stylesheet" href="styles/select_role.css">
 </head>
 
 <body>
-    <form action="" method="post">
-        <label for="role-select">Выберите роль:</label>
-        <select name="role-select" id="role-select">
-            <option value="" disabled selected>— Выберите роль —</option>
-            <?php
-            foreach ($roles as $element) {
-                if ($element->title === "ADMIN")
-                    echo "<option value=\"$element->id\">Администратор</option>";
-                else if ($element->title === "MODER")
-                    echo "<option value=\"$element->id\">Модератор</option>";
-                else if ($element->title === "USER")
-                    echo "<option value=\"$element->id\">Пользователь</option>";
-            }
-            ?>
-        </select>
-        <button type="submit">Войти</button>
-    </form>
+    <main>
+        <div class="top-div"></div>
+        <div class="mid-div">
+            <div class="mid-div-left"></div>
+            <div class="mid-div-mid">
+                <h2>Выберите роль</h2>
+                <form action="" method="post">
+                    <div>
+                        <select name="role-select" id="role-select">
+                            <option value="" disabled selected>— Выберите роль —</option>
+                            <?php
+                            foreach ($roles as $element) {
+                                if ($element->title === "ADMIN")
+                                    echo "<option value=\"$element->id\">Администратор</option>";
+                                else if ($element->title === "MODER")
+                                    echo "<option value=\"$element->id\">Модератор</option>";
+                                else if ($element->title === "USER")
+                                    echo "<option value=\"$element->id\">Пользователь</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div>
+                        <button class="btn" type="submit">Войти</button>
+                    </div>
+                </form>
+            </div>
+            <div class="mid-div-right"></div>
+        </div>
+    </main>
 
     <script src="scripts/select_role.js"></script>
 </body>

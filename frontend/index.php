@@ -147,10 +147,18 @@ if (!empty($_POST["active-method"])) {
             <h2>Создание новости</h2>
             <form action="" method="post">
                 <input type="hidden" name="active-method" class="active-method" value="create-news">
-                <label for="created-news-title">Заголовок</label>
-                <input type="text" name="created-news-title" class="created-news-title" required>
-                <label for="created-news-data">Текст</label>
-                <textarea name="created-news-data" class="created-news-data" required></textarea>
+                <div>
+                    <label for="created-news-title">Заголовок</label>
+                </div>
+                <div>
+                    <input type="text" name="created-news-title" class="created-news-title" required>
+                </div>
+                <div>
+                    <label for="created-news-data">Текст</label>
+                </div>
+                <div>
+                    <textarea name="created-news-data" class="created-news-data" required></textarea>
+                </div>
                 <button type="submit" id="create-new-container-submit-btn" class="add-news-btn btn">Создать новость</button>
             </form>
         </div>
@@ -221,8 +229,8 @@ if (!empty($_POST["active-method"])) {
                     foreach ($news as $element) {
                         $date = new DateTime($element->dateTime);
                         $formateDate = $date->format('d.m.Y, H:i');
-                        $newsList = $newsList . "<div class=\"news-item\"><div class=\"usr-card-news\">".
-                        "<div class=\"usr-card-news-photo\"></div>"
+                        $newsList = $newsList . "<div class=\"news-item\"><div class=\"usr-card-news\">" .
+                            "<div class=\"usr-card-news-photo\"></div>"
                             . htmlspecialchars($element->author->surname) . " "
                             . htmlspecialchars($element->author->name) . " "
                             . ($element->author->verified ? "&#10004" : '') . "<br>" .

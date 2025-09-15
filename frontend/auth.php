@@ -42,20 +42,45 @@ if ($_POST) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вход</title>
+    <link rel="stylesheet" href="styles/auth.css">
 </head>
 
 <body>
     <main>
-        <h2>Вход</h2>
-        <form action="" method="post">
-            <label for="email">Почта</label>
-            <input type="email" name="email" id="email" required>
-            <label for="pass">Пароль</label>
-            <input type="password" name="pass" id="pass" required>
-            <button type="submit" id="login-btn">Вход</button>
-        </form>
-        <a href="reg.php">Регистрация</a>
-        <a href="">Восстановить пароль</a>
+        <div class="top-div"></div>
+        <div class="mid-div">
+            <div class="mid-div-left"></div>
+            <div class="mid-div-mid">
+                <h2>Вход</h2>
+                <form action="" method="post">
+                    <div>
+                        <div>
+                            <label for="email">Почта</label>
+                        </div>
+                        <div>
+                            <input type="email" name="email" id="email" required>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <label for="pass">Пароль</label>
+                        </div>
+                        <div>
+                            <input type="password" name="pass" id="pass" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn" id="login-btn">Вход</button>
+                </form>
+                <div>
+                    <a href="reg.php">Регистрация</a>
+                </div>
+                <div>
+                    <a href="">Восстановить пароль</a>
+                </div>
+            </div>
+            <div class="mid-div-right"></div>
+        </div>
+
     </main>
 </body>
 

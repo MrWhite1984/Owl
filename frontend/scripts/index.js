@@ -5,18 +5,18 @@ let createNewContainerSubmitBtn = document.getElementById("create-new-container-
 let newsContainer = document.getElementById("news-container");
 let createNewsContainer = document.getElementById("create-news-container");
 
-containerAddNewsBtn.addEventListener("click", function(){
+containerAddNewsBtn.addEventListener("click", function () {
     newsContainer.style.display = "none";
     createNewsContainer.style.display = "block";
 
 });
 
-revBtn.addEventListener("click", function(){
+revBtn.addEventListener("click", function () {
     newsContainer.style.display = "block";
     createNewsContainer.style.display = "none";
 });
 
-createNewContainerSubmitBtn.addEventListener("click", function(){
+createNewContainerSubmitBtn.addEventListener("click", function () {
     newsContainer.style.display = "block";
     createNewsContainer.style.display = "none";
 });
