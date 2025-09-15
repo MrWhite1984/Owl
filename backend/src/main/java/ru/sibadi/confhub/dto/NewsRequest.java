@@ -7,13 +7,13 @@ import java.time.Instant;
 public class NewsRequest {
     private String title;
     private String data;
-    private String authorId;
+    private String token; //надо токен
     private Timestamp dateTime;
 
-    public NewsRequest(String title, String data, String authorId) {
+    public NewsRequest(String title, String data, String token) {
         this.title = title;
         this.data = data;
-        this.authorId = authorId;
+        this.token = token;
         this.dateTime = Timestamp.from(Instant.now());
     }
 
@@ -25,8 +25,8 @@ public class NewsRequest {
         return data;
     }
 
-    public String getAuthorId() {
-        return authorId;
+    public String getToken() {
+        return token;
     }
 
     public Timestamp getDateTime() {

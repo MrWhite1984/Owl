@@ -11,6 +11,7 @@ import ru.sibadi.confhub.dto.NewsResponse;
 import ru.sibadi.confhub.entity.News;
 import ru.sibadi.confhub.service.NewsService;
 import ru.sibadi.confhub.service.PeopleServices;
+import ru.sibadi.confhub.service.RedisSessionService;
 
 import java.util.UUID;
 
@@ -24,12 +25,16 @@ public class NewsController {
     @Autowired
     private PeopleServices peopleServices;
 
+    @Autowired
+    private RedisSessionService redisSessionService;
+
     @PostMapping("/create")
     public ResponseEntity<?> createNews(@RequestBody NewsRequest request){
+        //получать надо токен
         News news = new News(
                 request.getTitle(),
                 request.getData(),
-                peopleServices.getPeopleById(UUID.fromString(request.getAuthorId())),
+                peopleServices.getPeopleById(redisSessionService.getUserIdBySessionToken(request.getToken())),
                 request.getDateTime()
         );
         News saveNews = newsService.createNews(news);

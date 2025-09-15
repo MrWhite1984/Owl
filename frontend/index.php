@@ -3,6 +3,10 @@
     
     $role=null;
 
+    $full_rights = ["ADMIN"];
+    $moders_rights = ["ADMIN", "MODER"];
+    $user_rights = ["ADMIN", "MODER", "USER"];
+
     if(empty($_SESSION["token"]) || empty($_SESSION["selected_role"])){
         $token_is_valid = false;
     }
@@ -60,9 +64,6 @@
             $role = json_decode($response);
         }
 
-        $full_rights = ["ADMIN"];
-        $moders_rights = ["ADMIN", "MODER"];
-        $user_rights = ["ADMIN", "MODER", "USER"];
 
         $api_url = "http://sibadi-conf-hub:8080/api/people/getPeopleLight";
     $payload = json_encode([
@@ -92,6 +93,7 @@
     ?>
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -100,6 +102,7 @@
     <link rel="stylesheet" href="styles/nav.css">
     <link rel="stylesheet" href="styles/header.css">
 </head>
+
 <body>
     <?php
         if($token_is_valid){
@@ -111,8 +114,19 @@
     ?>
     <?php include 'elements/nav.php';?>
     <main>
-        
-        <div class="container">
+        <div id="create-news-container" class="create-news-container">
+            <button id="rev-btn" class="rev-btn btn">&lsaquo; Назад</button>
+            <h2>Создание новости</h2>
+            <form action="" method="post">
+                <input type="hidden" name="active-method" class="active-method" value="create-news">
+                <label for="created-news-title">Заголовок</label>
+                <input type="text" name="created-news-title" class="created-news-title">
+                <label for="created-news-data">Текст</label>
+                <textarea name="created-news-data" class="created-news-data"></textarea>
+                <button class="add-news-btn btn">Создать статью</button>
+            </form>
+        </div>
+        <div id="news-container" class="news-container">
             <?php
                 if($token_is_valid){
                     $hour = (int)date('H');
@@ -145,11 +159,19 @@
             <h2>
                 Новости
             </h2>
+            <?php 
+                if($role != null){
+                    if(in_array($role->title, $moders_rights))
+                        echo "<button id=\"container-add-news-btn\" class=\"add-news-btn btn\">Создать новость</button>";
+                }
+            ?>
             <div class="news-block"></div>
-        </div>        
-        
+        </div>
+
     </main>
     <?php include 'elements/footer.php';?>
+    <script src="scripts/header.js"></script>
     <script src="scripts/index.js"></script>
 </body>
+
 </html>

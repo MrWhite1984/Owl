@@ -1,11 +1,16 @@
-let navBtn = document.getElementById("nav-btn");
-let sidebarContainer = document.getElementById("sidebar-container");
+let containerAddNewsBtn = document.getElementById("container-add-news-btn");
+let revBtn = document.getElementById("rev-btn");
 
-navBtn.addEventListener("click", function(){
-    let computedStyle = window.getComputedStyle(sidebarContainer);
-    if (computedStyle.display === "none") {
-        sidebarContainer.style.display = "block";
-    } else {
-        sidebarContainer.style.display = "none";
-    }
+let newsContainer = document.getElementById("news-container");
+let createNewsContailner = document.getElementById("create-news-container");
+
+containerAddNewsBtn.addEventListener("click", function(){
+    newsContainer.style.display = "none";
+    createNewsContailner.style.display = "block";
+
+});
+
+revBtn.addEventListener("click", function(){
+    newsContainer.style.display = "block";
+    createNewsContailner.style.display = "none";
 });
