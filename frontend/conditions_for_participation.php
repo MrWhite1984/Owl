@@ -124,6 +124,8 @@ if (!empty($_POST["function"])) {
         $newData = preg_split('/\r\n|\r|\n/', $_POST["container-data"]);
         file_put_contents('text_data/conditions_for_participation.json', json_encode($newData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
+    header('Location: /conditions_for_participation.php');
+    exit;
 }
 ?>
 

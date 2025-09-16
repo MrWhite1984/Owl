@@ -56,9 +56,6 @@ public class People {
     )
     private Set<Roles> roles = new HashSet<>();
 
-    @ManyToMany(mappedBy = "participants", fetch = FetchType.LAZY)
-    private Set<Projects> projects = new HashSet<>();
-
     @ManyToMany(mappedBy = "moderators", fetch = FetchType.LAZY)
     private Set<Projects> moderated_projects = new HashSet<>();
 
@@ -70,6 +67,10 @@ public class People {
 
     @Column (name="e_lib_link", updatable = true, nullable = true)
     private String eLibLink;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name="projects", nullable = false)
+    private Set<Projects> projects = new HashSet<>();
 
     public People(String surname,
                   String name,

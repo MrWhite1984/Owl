@@ -39,12 +39,8 @@ public class Projects {
     @JoinColumn(name="section", nullable = false)
     private Sections section;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "project_participants",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "people_id")
-    )
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name="participants", nullable = false)
     private Set<People> participants = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
