@@ -1,12 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConfHub.Core.Domain.Entities
+﻿namespace ConfHub.Core.Domain.Entities
 {
-    internal class News
+    public class News
     {
+        public Guid Id { get; private set; }
+        public string Title { get; private set; } = default!;
+        public string Content { get; private set; } = default!;
+        public Guid AuthorPersonId { get; private set; }
+        public DateTime PublishedAt { get; private set; }
+
+        public News() { }
+        public News (Guid id, string title, string content, Guid authorPersonId, DateTime publishedAt)
+        {
+            Id = id;
+            Title = title;
+            Content = content;
+            AuthorPersonId = authorPersonId;
+            PublishedAt = publishedAt;
+        }
     }
 }

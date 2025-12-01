@@ -6,7 +6,19 @@ using System.Threading.Tasks;
 
 namespace ConfHub.Core.Domain.Entities
 {
-    internal class ProjectParticipant
+    public class ProjectParticipant
     {
+        public Guid ProjectId { get; private set; }
+        public Guid PersonId { get; private set; }
+        public bool IsScientificSupervisor { get; private set; }
+        public string ConfirmationStatus { get; private set; } = default!;
+        public ProjectParticipant() { }
+        public ProjectParticipant(Guid projectId, Guid personId, bool isScientificSupervisor, string confirmationStatus)
+        {
+            ProjectId = projectId;
+            PersonId = personId;
+            IsScientificSupervisor = isScientificSupervisor;
+            ConfirmationStatus = confirmationStatus;
+        }
     }
 }
