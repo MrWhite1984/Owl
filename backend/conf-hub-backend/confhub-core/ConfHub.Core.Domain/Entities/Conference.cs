@@ -12,6 +12,7 @@ namespace ConfHub.Core.Domain.Entities
         public string Title { get; private set; } = default!;
         public DateTime StartDate { get; private set; }
         public bool IsActive { get; private set; }
+        public bool IsDeleted { get; private set; }
         public string ProgramFileUrl { get; private set; } = default!;
         public string CollectionUrl { get; private set; } = default!;
         public Conference() { }
