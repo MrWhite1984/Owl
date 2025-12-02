@@ -8,14 +8,14 @@ namespace ConfHub.Core.Domain.Entities
 {
     public class ConferenceSettings
     {
-        public Guid Id { get; private set; }
+        public Guid ConferenceId { get; private set; }
         public int MaxArticlesPerAuthor { get; private set; }
         public bool AllowOnlineDefence { get; private set; }
         public bool IsPublicPageEnabled { get; private set; }
         public ConferenceSettings() { }
-        public ConferenceSettings(Guid id, int maxArticlesPerAuthor, bool allowOnlineDefence, bool isPublicPageEnabled)
+        public ConferenceSettings(Guid conferenceId, int maxArticlesPerAuthor, bool allowOnlineDefence, bool isPublicPageEnabled)
         {
-            Id = id;
+            ConferenceId = conferenceId;
             MaxArticlesPerAuthor = maxArticlesPerAuthor;
             AllowOnlineDefence = allowOnlineDefence;
             IsPublicPageEnabled = isPublicPageEnabled;
