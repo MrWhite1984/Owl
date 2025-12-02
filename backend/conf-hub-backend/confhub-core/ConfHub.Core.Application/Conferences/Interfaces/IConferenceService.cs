@@ -6,7 +6,7 @@ namespace ConfHub.Core.Application.Conferences.Interfaces
     {
         Task<Conference?> GetByIdAsync(Guid id);
         Task<IEnumerable<Conference>> GetAllAsync();
-        Task AddAsync(string title, DateTime startDate, bool isActive, bool isDeleted);
-        void Update(Conference conference);
+        Task AddAsync(string title, DateTime startDate);
+        Task UpdateAsync(Conference conference);
     }
 }
