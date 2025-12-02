@@ -19,6 +19,6 @@ namespace ConfHub.Core.Application.Persons.Interfaces
         Task<IEnumerable<Person>?> GetPersonByJobTitleAsync(string jobTitle);
         Task<Person?> GetPersonByEmailAsync(string email);
         Task AddAsync(Person person);
-        Task UpdateAsync(Person person);
+        void Update(Person person);
     }
 }

@@ -1,6 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <Compile Remove="Persistence\Новая папка\**" />
+    <EmbeddedResource Remove="Persistence\Новая папка\**" />
+    <None Remove="Persistence\Новая папка\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ConfHub.Core.Domain\ConfHub.Core.Domain.csproj" />
     <ProjectReference Include="..\ConfHub.Core.Application\ConfHub.Core.Application.csproj" />
   </ItemGroup>

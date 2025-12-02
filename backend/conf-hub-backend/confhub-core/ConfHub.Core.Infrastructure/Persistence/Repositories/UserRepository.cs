@@ -1,0 +1,37 @@
+﻿using ConfHub.Core.Application.Users.Interfaces;
+using ConfHub.Core.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConfHub.Core.Infrastructure.Persistence.Repositories
+{
+    public class UserRepository : IUserRepository
+    {
+        private readonly AppDbContext _appDbContext;
+
+        public UserRepository(AppDbContext appDbContext)
+        {
+            _appDbContext = appDbContext;
+        }
+
+        public async Task AddAsync(User user)
+        {
+            await _appDbContext.Users.AddAsync(user);
+        }
+
+        public async Task<IEnumerable<User>> GetUsersByPersonIdAsync(Guid id)
+        {
+            var currentUser = await _appDbContext.Users.Where(x => x.PersonId.Equals(id)).ToListAsync();
+            return currentUser;
+        }
+
+        public void Update(User user)
+        {
+            _appDbContext.Users.Update(user);
+        }
+    }
+}
