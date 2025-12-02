@@ -6,7 +6,7 @@ namespace ConfHub.Core.Application.ProjectParticipants.Interfaces
     {
         Task<IEnumerable<ProjectParticipant>> GetProjectParticipantsByProjectIdAsync(Guid projectId);
         Task AddAsync(ProjectParticipant projectParticipant);
-        Task UpdateAsync(ProjectParticipant projectParticipant);
+        void Update(ProjectParticipant projectParticipant);
         Task DeleteAsync(Guid projectParticipantId);
     }
 }

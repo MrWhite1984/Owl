@@ -7,6 +7,6 @@ namespace ConfHub.Core.Application.Sections.Interfaces
         Task<Section?> GetSectionByIdAsync(Guid id);
         Task<IEnumerable<Section>> GetSectionsByConferenceId(Guid conferenceId);
         Task AddAsync(Section section);
-        Task UpdateAsync(Section section);
+        void Update(Section section);
     }
 }
