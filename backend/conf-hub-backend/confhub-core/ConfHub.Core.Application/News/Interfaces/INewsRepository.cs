@@ -9,10 +9,10 @@ namespace ConfHub.Core.Application.News.Interfaces
 {
     public interface INewsRepository
     {
-        Task<Domain.Entities.News> GetNewsByIdAsync(Guid id);
+        Task<Domain.Entities.News?> GetNewsByIdAsync(Guid id);
         Task<IEnumerable<Domain.Entities.News>> GetPartOfNewsByDateTimeAsync(DateTime startDateTime, int partSize);
         Task AddAsync(Domain.Entities.News entity);
-        Task UpdateAsync(Domain.Entities.News entity);
+        void Update(Domain.Entities.News entity);
         Task DeleteAsync(Guid id);
 
     }

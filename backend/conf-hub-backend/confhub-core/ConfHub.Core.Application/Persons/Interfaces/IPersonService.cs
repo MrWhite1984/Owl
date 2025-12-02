@@ -2,7 +2,7 @@
 
 namespace ConfHub.Core.Application.Persons.Interfaces
 {
-    public interface IPersonRepository
+    public interface IPersonService
     {
         Task<Person?> GetPersonByIdAsync(Guid id);
         Task<IEnumerable<Person>?> GetPersonsBySurnameAsync(string surname);
@@ -13,7 +13,7 @@ namespace ConfHub.Core.Application.Persons.Interfaces
         Task<IEnumerable<Person>?> GetPersonsByCityAsync(string city);
         Task<IEnumerable<Person>?> GetPersonByJobTitleAsync(string jobTitle);
         Task<Person?> GetPersonByEmailAsync(string email);
-        Task AddAsync(Person person);
-        void Update(Person person);
+        Task AddAsync(string surname, string name, string patronymic, string educationalInstitution, string jobTitle, string city, string phone, string email, bool isVerified, bool isDeleted, string elibraryProfileUrl);
+        Task UpdateAsync(Person person);
     }
 }

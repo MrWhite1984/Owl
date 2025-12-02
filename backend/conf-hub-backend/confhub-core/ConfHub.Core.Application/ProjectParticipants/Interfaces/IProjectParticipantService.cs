@@ -2,11 +2,11 @@
 
 namespace ConfHub.Core.Application.ProjectParticipants.Interfaces
 {
-    public interface IProjectParticipantRepository
+    public interface IProjectParticipantService
     {
         Task<IEnumerable<ProjectParticipant>> GetProjectParticipantsByProjectIdAsync(Guid projectId);
-        Task AddAsync(ProjectParticipant projectParticipant);
-        void Update(ProjectParticipant projectParticipant);
+        Task AddAsync(Guid projectId, Guid personId, bool isScientificSupervisor, string confirmationStatus, string acceptionFileUrl);
+        Task UpdateAsync(ProjectParticipant projectParticipant);
         Task DeleteAsync(Guid projectParticipantId);
     }
 }

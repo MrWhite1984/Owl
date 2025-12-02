@@ -2,11 +2,11 @@
 
 namespace ConfHub.Core.Application.Conferences.Interfaces
 {
-    public interface IConferenceRepository
+    public interface IConferenceService
     {
         Task<Conference?> GetByIdAsync(Guid id);
         Task<IEnumerable<Conference>> GetAllAsync();
-        Task AddAsync(Conference conference);
+        Task AddAsync(string title, DateTime startDate, bool isActive, bool isDeleted);
         void Update(Conference conference);
     }
 }

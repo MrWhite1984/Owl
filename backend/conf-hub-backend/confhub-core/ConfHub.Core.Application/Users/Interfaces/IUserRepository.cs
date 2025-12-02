@@ -4,8 +4,8 @@ namespace ConfHub.Core.Application.Users.Interfaces
 {
     public interface IUserRepository
     {
-        Task<User?> GetUserByPersonIdAsync(Guid id);
+        Task<IEnumerable<User>> GetUsersByPersonIdAsync(Guid id);
         Task AddAsync (User user);
-        Task UpdateAsync (User user);
+        void Update (User user);
     }
 }
