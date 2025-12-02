@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConfHub.Core.Domain.Entities
+﻿namespace ConfHub.Core.Domain.Entities
 {
     public class ProjectParticipant
     {
@@ -12,13 +6,15 @@ namespace ConfHub.Core.Domain.Entities
         public Guid PersonId { get; private set; }
         public bool IsScientificSupervisor { get; private set; }
         public string ConfirmationStatus { get; private set; } = default!;
+        public string AcceptionFileUrl { get; private set; } = default!;
         public ProjectParticipant() { }
-        public ProjectParticipant(Guid projectId, Guid personId, bool isScientificSupervisor, string confirmationStatus)
+        public ProjectParticipant(Guid projectId, Guid personId, bool isScientificSupervisor, string confirmationStatus, string acceptionFileUrl)
         {
             ProjectId = projectId;
             PersonId = personId;
             IsScientificSupervisor = isScientificSupervisor;
             ConfirmationStatus = confirmationStatus;
+            AcceptionFileUrl = acceptionFileUrl;
         }
     }
 }
