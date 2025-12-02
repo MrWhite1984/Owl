@@ -1,7 +1,6 @@
 ﻿using ConfHub.Core.Application.Persons.Interfaces;
 using ConfHub.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
 
 namespace ConfHub.Core.Infrastructure.Persistence.Repositories
 {

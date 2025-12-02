@@ -1,11 +1,6 @@
 ﻿using ConfHub.Core.Application.Conferences.Interfaces;
 using ConfHub.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConfHub.Core.Infrastructure.Persistence.Repositories
 {
