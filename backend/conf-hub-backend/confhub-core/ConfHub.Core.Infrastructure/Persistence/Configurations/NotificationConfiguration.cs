@@ -1,0 +1,17 @@
+﻿using ConfHub.Core.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace ConfHub.Core.Infrastructure.Persistence.Configurations
+{
+    public class NotificationConfiguration : IEntityTypeConfiguration<Notification>
+    {
+        public void Configure(EntityTypeBuilder<Notification> builder)
+        {
+            builder.ToTable("Notifications");
+            builder.HasKey(x => x.Id);
+
+            builder.HasOne<Person>().WithMany().HasForeignKey(x => x.TargetPersonId);
+        }
+    }
+}
