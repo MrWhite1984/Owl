@@ -1,6 +1,8 @@
 ﻿using ConfHub.Core.Application.Common.Interfaces;
 using ConfHub.Core.Application.Persons.Interfaces;
 using ConfHub.Core.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace ConfHub.Core.Application.Persons.Services
 {
@@ -15,11 +17,34 @@ namespace ConfHub.Core.Application.Persons.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task AddAsync(string surname, string name, string patronymic, string educationalInstitution, string jobTitle, string city, string phone, string email, bool isVerified, bool isDeleted, string elibraryProfileUrl)
+        public async Task<Person?> AddAsync(string surname, string name, string patronymic, string educationalInstitution, string jobTitle, string city, string phone, string email, bool isVerified, bool isDeleted, string elibraryProfileUrl)
         {
             Person person = new Person(Guid.NewGuid(), surname, name, patronymic, educationalInstitution, jobTitle, city, phone, email, isVerified, isDeleted, elibraryProfileUrl, "", DateTime.UtcNow);
-            await _personRepository.AddAsync(person);
-            await _unitOfWork.SaveChangesAsync();
+            try
+            {
+                await _personRepository.AddAsync(person);
+                await _unitOfWork.SaveChangesAsync();
+                return person;
+            }
+            catch (DbUpdateException ex)
+            {
+                var postgresEx = ex.InnerException as PostgresException
+                   ?? ex.InnerException?.InnerException as PostgresException;
+
+                if (postgresEx != null && postgresEx.SqlState == PostgresErrorCodes.UniqueViolation)
+                {
+                    if (postgresEx.ConstraintName != null)
+                    {
+                        if (postgresEx.ConstraintName.Contains("email", StringComparison.OrdinalIgnoreCase))
+                            throw new InvalidOperationException("Email уже зарегистрирован.");
+                        if (postgresEx.ConstraintName.Contains("phone", StringComparison.OrdinalIgnoreCase))
+                            throw new InvalidOperationException("Номер телефона уже зарегистрирован.");
+                    }
+                    throw new InvalidOperationException("Нарушено правило уникальности.");
+                }
+
+                throw new InvalidOperationException("Нарушено правило уникальности.");
+            }
         }
 
         public async Task<Person?> GetPersonByEmailAsync(string email)
@@ -64,9 +89,9 @@ namespace ConfHub.Core.Application.Persons.Services
             return currentPersons;
         }
 
-        public async Task<IEnumerable<Person>?> GetPersonsByPatronimycAsync(string patronimyc)
+        public async Task<IEnumerable<Person>?> GetPersonsByPatronymicAsync(string patronimyc)
         {
-            var currentPersons = await _personRepository.GetPersonsByPatronimycAsync(patronimyc);
+            var currentPersons = await _personRepository.GetPersonsByPatronymicAsync(patronimyc);
             return currentPersons;
         }
 

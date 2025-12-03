@@ -57,12 +57,12 @@ namespace ConfHub.Core.Infrastructure.Persistence.Repositories
         public async Task<IEnumerable<Person>?> GetPersonsByPartOfFullNameAsync(string partOfFullName)
         {
             var currentPersons = await _appDbContext.Persons
-                .Where(x => string.Join(' ', new { x.Surname, x.Name, x.Patronymic}).ToLower().Contains(partOfFullName.ToLower()))
+                .Where(x => string.Join(' ', new { x.Surname, x.Name, x.Patronymic}).Contains(partOfFullName))
                 .ToListAsync();
             return currentPersons;
         }
 
-        public async Task<IEnumerable<Person>?> GetPersonsByPatronimycAsync(string patronimyc)
+        public async Task<IEnumerable<Person>?> GetPersonsByPatronymicAsync(string patronimyc)
         {
             var currentPersons = await _appDbContext.Persons.Where(x => x.Patronymic.Equals(patronimyc)).ToListAsync();
             return currentPersons;
