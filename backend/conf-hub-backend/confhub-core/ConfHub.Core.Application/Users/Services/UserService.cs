@@ -9,16 +9,19 @@ namespace ConfHub.Core.Application.Users.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IPasswordHasher _passwordHasher;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UserService(IUserRepository userRepository, IUnitOfWork unitOfWork)
+        public UserService(IUserRepository userRepository, IPasswordHasher passwordHasher, IUnitOfWork unitOfWork)
         {
             _userRepository = userRepository;
+            _passwordHasher = passwordHasher;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task AddAsync(Guid personId, string role, string passwordHash)
+        public async Task AddAsync(Guid personId, string role, string password)
         {
+            var passwordHash = _passwordHasher.Hash(password);
             User user = new User(personId, role, passwordHash);
             try
             {
