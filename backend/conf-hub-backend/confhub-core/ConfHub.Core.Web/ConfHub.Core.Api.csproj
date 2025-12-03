@@ -17,11 +17,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ConfHub.Core.Application\ConfHub.Core.Application.csproj" />
+    <ProjectReference Include="..\ConfHub.Core.Contracts\ConfHub.Core.Contracts.csproj" />
     <ProjectReference Include="..\ConfHub.Core.Infrastructure\ConfHub.Core.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
