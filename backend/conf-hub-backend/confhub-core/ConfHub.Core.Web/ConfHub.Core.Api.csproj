@@ -20,4 +20,8 @@
     <ProjectReference Include="..\ConfHub.Core.Infrastructure\ConfHub.Core.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>

@@ -4,6 +4,6 @@
     {
         Task<Domain.Entities.ConferenceSettings?> GetByConferenceIdAsync(Guid conferenceId);
         Task AddAsync(int maxArticlesPerAuthors, bool allowOnlineDefence, bool isPublicPageEnabled);
-        void Update(Domain.Entities.ConferenceSettings conferenceSettings);
+        Task UpdateAsync(Domain.Entities.ConferenceSettings conferenceSettings);
     }
 }
