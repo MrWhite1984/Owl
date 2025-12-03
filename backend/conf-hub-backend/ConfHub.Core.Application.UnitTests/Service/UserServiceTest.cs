@@ -14,14 +14,12 @@ namespace ConfHub.Core.Application.UnitTests.Service
         {
             var mockRepo = new Mock<IUserRepository>();
             var mockUow = new Mock<IUnitOfWork>();
-            var mockPas = new Mock<IPasswordHasher>();
-            var service = new UserService(mockRepo.Object, mockPas.Object, mockUow.Object);
+            var service = new UserService(mockRepo.Object, mockUow.Object);
 
             Guid personId = Guid.NewGuid();
             string role = "Role";
-            string password = "Password";
 
-            await service.AddAsync(personId, role, password);
+            await service.AddAsync(personId, role);
 
             mockRepo.Verify(r => r.AddAsync(It.Is<Domain.Entities.User>(m =>
                 m.PersonId == personId &&

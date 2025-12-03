@@ -31,7 +31,37 @@ namespace ConfHub.Core.Infrastructure.Security
 
         public bool Verify(string password, string hash)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(password))
+                throw new ArgumentNullException(nameof(password));
+            if (string.IsNullOrWhiteSpace(hash))
+                return false;
+
+            try
+            {
+                byte[] hashBytes = Convert.FromBase64String(hash);
+
+                if (hashBytes.Length != SaltSize + KeySize)
+                    return false;
+
+                byte[] salt = new byte[SaltSize];
+                byte[] storedHash = new byte[KeySize];
+                Buffer.BlockCopy(hashBytes, 0, salt, 0, SaltSize);
+                Buffer.BlockCopy(hashBytes, SaltSize, storedHash, 0, KeySize);
+
+                byte[] computedHash = KeyDerivation.Pbkdf2(
+                    password: password,
+                    salt: salt,
+                    prf: KeyDerivationPrf.HMACSHA256,
+                    iterationCount: Iterations,
+                    numBytesRequested: KeySize
+                );
+
+                return CryptographicOperations.FixedTimeEquals(computedHash, storedHash);
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

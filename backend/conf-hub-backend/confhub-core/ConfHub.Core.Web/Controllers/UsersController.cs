@@ -26,7 +26,7 @@ namespace ConfHub.Core.Api.Controllers
 
             try
             {
-                await _userService.AddAsync(addUserRequest.PersonId, addUserRequest.Role, addUserRequest.PasswordHash);
+                await _userService.AddAsync(addUserRequest.PersonId, addUserRequest.Role);
                 return Ok(new AddUserResponse());
             }
             catch (Exception ex)

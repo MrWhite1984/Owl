@@ -34,7 +34,8 @@ namespace ConfHub.Core.Api.Controllers
                     addPersonRequest.Email,
                     addPersonRequest.IsVerified,
                     false,
-                    addPersonRequest.ElibraryProfileUrl);
+                    addPersonRequest.ElibraryProfileUrl,
+                    addPersonRequest.Password);
                 if (response == null)
                     return BadRequest("Error while saving user");
                 return Ok(new AddPersonResponse(response.Id));

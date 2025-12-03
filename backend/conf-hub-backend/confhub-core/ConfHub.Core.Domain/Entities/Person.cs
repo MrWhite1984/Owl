@@ -16,9 +16,10 @@
         public string ElibraryProfileUrl { get; private set; } = default!;
         public string PhotoUrl { get; private set; } = default!;
         public DateTime CreatedAt { get; private set; } = default!;
+        public string PasswordHash { get; private set; } = default!;
 
         public Person() { }
-        public Person(Guid id, string surname, string name, string patronymic, string educationalInstitution, string jobTitle, string city, string phone, string email, bool isVerified, bool isDeleted, string elibraryProfileUrl, string photoUrl, DateTime createdAt)
+        public Person(Guid id, string surname, string name, string patronymic, string educationalInstitution, string jobTitle, string city, string phone, string email, bool isVerified, bool isDeleted, string elibraryProfileUrl, string photoUrl, DateTime createdAt, string passwordHash)
         {
             Id = id;
             Surname = surname;
@@ -34,6 +35,7 @@
             ElibraryProfileUrl = elibraryProfileUrl;
             PhotoUrl = photoUrl;
             CreatedAt = createdAt;
+            PasswordHash = passwordHash;
         }
     }
 }

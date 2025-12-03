@@ -14,7 +14,8 @@ namespace ConfHub.Core.Application.UnitTests.Service
         {
             var mockRepo = new Mock<IPersonRepository>();
             var mockUow = new Mock<IUnitOfWork>();
-            var service = new PersonService(mockRepo.Object, mockUow.Object);
+            var mockPas = new Mock<IPasswordHasher>();
+            var service = new PersonService(mockRepo.Object, mockPas.Object, mockUow.Object);
 
             string surname = "UserSurname";
             string name = "UserName";
@@ -27,8 +28,9 @@ namespace ConfHub.Core.Application.UnitTests.Service
             bool isVerified = false;
             bool isDeleted = false;
             string elibraryProfileUrl = "url";
+            string password = "password";
 
-            await service.AddAsync(surname, name, patronymic, educationalInstitution, jobTitle, city, phone, email, isVerified, isDeleted, elibraryProfileUrl);
+            await service.AddAsync(surname, name, patronymic, educationalInstitution, jobTitle, city, phone, email, isVerified, isDeleted, elibraryProfileUrl, password);
 
             mockRepo.Verify(r => r.AddAsync(It.Is<Domain.Entities.Person>(m =>
                 m.Surname == surname &&

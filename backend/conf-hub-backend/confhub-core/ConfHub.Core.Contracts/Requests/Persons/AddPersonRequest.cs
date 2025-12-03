@@ -14,5 +14,6 @@ namespace ConfHub.Core.Contracts.Requests.Persons
         [EmailAddress(ErrorMessage = "Некорректный формат email.")]
         string Email,
         bool IsVerified,
-        string ElibraryProfileUrl);
+        string ElibraryProfileUrl,
+        string Password);
 }

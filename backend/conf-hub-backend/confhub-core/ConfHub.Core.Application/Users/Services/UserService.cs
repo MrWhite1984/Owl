@@ -9,20 +9,17 @@ namespace ConfHub.Core.Application.Users.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IPasswordHasher _passwordHasher;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UserService(IUserRepository userRepository, IPasswordHasher passwordHasher, IUnitOfWork unitOfWork)
+        public UserService(IUserRepository userRepository, IUnitOfWork unitOfWork)
         {
             _userRepository = userRepository;
-            _passwordHasher = passwordHasher;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task AddAsync(Guid personId, string role, string password)
+        public async Task AddAsync(Guid personId, string role)
         {
-            var passwordHash = _passwordHasher.Hash(password);
-            User user = new User(personId, role, passwordHash);
+            User user = new User(personId, role);
             try
             {
                 await _userRepository.AddAsync(user);
@@ -45,6 +42,7 @@ namespace ConfHub.Core.Application.Users.Services
                 throw new InvalidOperationException("Ошибка при создании пользователя.", ex);
             }
         }
+
 
         public async Task<IEnumerable<User>> GetUsersByPersonIdAsync(Guid id)
         {

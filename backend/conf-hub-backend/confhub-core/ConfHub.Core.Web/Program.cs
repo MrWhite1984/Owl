@@ -21,6 +21,7 @@ using ConfHub.Core.Application.Users.Interfaces;
 using ConfHub.Core.Application.Users.Services;
 using ConfHub.Core.Infrastructure.Persistence;
 using ConfHub.Core.Infrastructure.Persistence.Repositories;
+using ConfHub.Core.Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,6 +52,8 @@ builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<IProjectParticipantRepository, ProjectParticipantRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<ISectionRepository, SectionRepository>();
+
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 builder.Services.AddControllers();
 
