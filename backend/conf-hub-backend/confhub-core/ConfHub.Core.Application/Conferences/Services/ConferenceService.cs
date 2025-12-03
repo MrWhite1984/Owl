@@ -17,7 +17,7 @@ namespace ConfHub.Core.Application.Conferences.Services
 
         public async Task AddAsync(string title, DateTime startDate)
         {
-            Conference conference = new Conference(Guid.NewGuid(), title, startDate, false, string.Empty, string.Empty);
+            Conference conference = new Conference(Guid.NewGuid(), title, startDate, false, string.Empty);
             await _conferenceRepository.AddAsync(conference);
             await _unitOfWork.SaveChangesAsync();
         }

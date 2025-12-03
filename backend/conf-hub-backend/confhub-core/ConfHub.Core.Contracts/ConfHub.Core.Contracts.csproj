@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Requests\ChatMessages\" />
+    <Folder Include="Requests\Conferences\" />
+    <Folder Include="Requests\ConferenceSettings\" />
+    <Folder Include="Requests\News\" />
+    <Folder Include="Requests\Notifications\" />
+    <Folder Include="Requests\Persons\" />
+    <Folder Include="Requests\Projects\" />
+    <Folder Include="Requests\ProjectParticipants\" />
+    <Folder Include="Requests\Sections\" />
+    <Folder Include="Requests\Users\" />
+    <Folder Include="Responses\ChatMessages\" />
+    <Folder Include="Responses\Conferences\" />
+    <Folder Include="Responses\ConferenceSettings\" />
+    <Folder Include="Responses\News\" />
+    <Folder Include="Responses\Notifications\" />
+    <Folder Include="Responses\Persons\" />
+    <Folder Include="Responses\Projects\" />
+    <Folder Include="Responses\ProjectParticipants\" />
+    <Folder Include="Responses\Sections\" />
+    <Folder Include="Responses\Users\" />
+  </ItemGroup>
+
+</Project>

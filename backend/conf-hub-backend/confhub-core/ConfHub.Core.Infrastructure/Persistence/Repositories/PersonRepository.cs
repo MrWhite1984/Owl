@@ -57,7 +57,7 @@ namespace ConfHub.Core.Infrastructure.Persistence.Repositories
         public async Task<IEnumerable<Person>?> GetPersonsByPartOfFullNameAsync(string partOfFullName)
         {
             var currentPersons = await _appDbContext.Persons
-                .Where(x => string.Join(' ', new { x.Surname, x.Name, x.Patronymic}).Contains(partOfFullName))
+                .Where(x => string.Join(' ', new { x.Surname, x.Name, x.Patronymic}).ToLower().Contains(partOfFullName.ToLower()))
                 .ToListAsync();
             return currentPersons;
         }

@@ -9,7 +9,7 @@ namespace ConfHub.Core.Application.Notifications.Services
         private readonly INotificationRepository _notificationRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public NotificationService(IUnitOfWork unitOfWork, INotificationRepository notificationRepository)
+        public NotificationService(INotificationRepository notificationRepository, IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
             _notificationRepository = notificationRepository;
