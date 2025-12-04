@@ -62,7 +62,7 @@ namespace ConfHub.Core.Infrastructure.Persistence.Repositories
             return currentPersons;
         }
 
-        public async Task<IEnumerable<Person>?> GetPersonsByPatronimycAsync(string patronimyc)
+        public async Task<IEnumerable<Person>?> GetPersonsByPatronymicAsync(string patronimyc)
         {
             var currentPersons = await _appDbContext.Persons.Where(x => x.Patronymic.Equals(patronimyc)).ToListAsync();
             return currentPersons;

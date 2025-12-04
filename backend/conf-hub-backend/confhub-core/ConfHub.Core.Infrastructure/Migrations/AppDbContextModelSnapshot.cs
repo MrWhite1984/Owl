@@ -191,6 +191,10 @@ namespace ConfHub.Core.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Patronymic")
                         .IsRequired()
                         .HasColumnType("text");
@@ -309,10 +313,6 @@ namespace ConfHub.Core.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Role")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("PersonId", "Role");

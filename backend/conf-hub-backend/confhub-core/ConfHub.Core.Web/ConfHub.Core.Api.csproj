@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -17,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ConfHub.Core.Application\ConfHub.Core.Application.csproj" />
+    <ProjectReference Include="..\ConfHub.Core.Contracts\ConfHub.Core.Contracts.csproj" />
     <ProjectReference Include="..\ConfHub.Core.Infrastructure\ConfHub.Core.Infrastructure.csproj" />
   </ItemGroup>
 

@@ -9,6 +9,6 @@ namespace ConfHub.Core.Application.Projects.Interfaces
         Task<IEnumerable<Project>> GetProjectsBySectionIdAsync(Guid sectionId);
         Task<IEnumerable<Project>> GetProjectsByStatusAsync(string status);
         Task AddAsync(Project project);
-        Task UpdateAsync(Project project);
+        void Update(Project project);
     }
 }

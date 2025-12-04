@@ -1,5 +1,6 @@
 ﻿using ConfHub.Core.Application.Users.Interfaces;
 using ConfHub.Core.Domain.Entities;
+using ConfHub.Core.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ConfHub.Core.Infrastructure.Persistence.Repositories
@@ -16,6 +17,12 @@ namespace ConfHub.Core.Infrastructure.Persistence.Repositories
         public async Task AddAsync(User user)
         {
             await _appDbContext.Users.AddAsync(user);
+        }
+
+        public async Task<bool> HasAnyUserAsync()
+        {
+            var anyUsers = await _appDbContext.Users.AnyAsync();
+            return anyUsers;
         }
 
         public async Task<IEnumerable<User>> GetUsersByPersonIdAsync(Guid id)

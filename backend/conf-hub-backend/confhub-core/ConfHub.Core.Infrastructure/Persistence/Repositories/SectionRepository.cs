@@ -24,7 +24,7 @@ namespace ConfHub.Core.Infrastructure.Persistence.Repositories
             return currentSection;
         }
 
-        public async Task<IEnumerable<Section>> GetSectionsByConferenceId(Guid conferenceId)
+        public async Task<IEnumerable<Section>> GetSectionsByConferenceIdAsync(Guid conferenceId)
         {
             var currentSections = await _appDbContext.Sections.Where(x => x.ConferenceId.Equals(conferenceId)).ToListAsync();
             return currentSections;
