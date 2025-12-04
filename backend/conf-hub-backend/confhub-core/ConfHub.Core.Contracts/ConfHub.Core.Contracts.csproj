@@ -21,7 +21,6 @@
     <Folder Include="Responses\ConferenceSettings\" />
     <Folder Include="Responses\News\" />
     <Folder Include="Responses\Notifications\" />
-    <Folder Include="Responses\Persons\" />
     <Folder Include="Responses\Projects\" />
     <Folder Include="Responses\ProjectParticipants\" />
     <Folder Include="Responses\Sections\" />

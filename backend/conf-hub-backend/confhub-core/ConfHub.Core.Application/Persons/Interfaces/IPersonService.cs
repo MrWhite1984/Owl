@@ -9,12 +9,12 @@ namespace ConfHub.Core.Application.Persons.Interfaces
         Task<IEnumerable<Person>?> GetPersonsBySurnameAsync(string surname);
         Task<IEnumerable<Person>?> GetPersonsByNameAsync(string name);
         Task<IEnumerable<Person>?> GetPersonsByPatronymicAsync(string patronimyc);
-        Task<IEnumerable<Person>?> GetPersonsByPartOfFullNameAsync(string partOfFullName);
+        Task<IEnumerable<Person>?> GetPersonsByPartOfFullNameAsync(string partOfFullName, string allowedRoles);
         Task<IEnumerable<Person>?> GetPersonsByEducationalInstitutionAsync(string educationalInstitution);
         Task<IEnumerable<Person>?> GetPersonsByCityAsync(string city);
         Task<IEnumerable<Person>?> GetPersonByJobTitleAsync(string jobTitle);
         Task<Person?> GetPersonByEmailAsync(string email);
         Task<Person?> AddAsync(string surname, string name, string patronymic, string educationalInstitution, string jobTitle, string city, string phone, string email, bool isVerified, bool isDeleted, string elibraryProfileUrl, string password);
-        Task UpdateAsync(Person person);
+        Task UpdateAsync(Guid id, string surname, string name, string patronymic, string educationalInstitution, string jobTitle, string city, string phone, string email, bool isVerified, bool isDeleted, string elibraryProfileUrl, string password);
     }
 }

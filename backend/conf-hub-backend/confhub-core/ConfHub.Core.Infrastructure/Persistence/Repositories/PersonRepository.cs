@@ -54,10 +54,15 @@ namespace ConfHub.Core.Infrastructure.Persistence.Repositories
             return currentPersons;
         }
 
-        public async Task<IEnumerable<Person>?> GetPersonsByPartOfFullNameAsync(string partOfFullName)
+        public async Task<IEnumerable<Person>?> GetPersonsByPartOfFullNameAsync(string partOfFullName, string allowedRole)
         {
+            var search = partOfFullName.Trim();
             var currentPersons = await _appDbContext.Persons
-                .Where(x => string.Join(' ', new { x.Surname, x.Name, x.Patronymic}).Contains(partOfFullName))
+                .Where(p => 
+                ((p.Surname ?? "") + " " + (p.Name ?? "") + " " + (p.Patronymic ?? "")).Contains(search)
+                && _appDbContext.Users.Any(u =>
+                u.PersonId == p.Id && allowedRole.Equals(u.Role))
+                )
                 .ToListAsync();
             return currentPersons;
         }
