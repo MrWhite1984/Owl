@@ -18,14 +18,12 @@ namespace ConfHub.Core.Application.UnitTests.Service
 
             Guid personId = Guid.NewGuid();
             string role = "Role";
-            string passwordHash = "Password";
 
-            await service.AddAsync(personId, role, passwordHash);
+            await service.AddAsync(personId, role);
 
             mockRepo.Verify(r => r.AddAsync(It.Is<Domain.Entities.User>(m =>
                 m.PersonId == personId &&
-                m.Role == role &&
-                m.PasswordHash == passwordHash
+                m.Role == role
             )), Times.Once);
 
             mockUow.Verify(u => u.SaveChangesAsync(CancellationToken.None), Times.Once);

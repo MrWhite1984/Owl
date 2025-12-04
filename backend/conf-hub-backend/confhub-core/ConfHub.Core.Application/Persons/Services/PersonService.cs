@@ -9,17 +9,21 @@ namespace ConfHub.Core.Application.Persons.Services
     public class PersonService : IPersonService
     {
         private readonly IPersonRepository _personRepository;
+        private readonly IPasswordHasher _passwordHasher;
         private readonly IUnitOfWork _unitOfWork;
 
-        public PersonService(IPersonRepository personRepository, IUnitOfWork unitOfWork)
+        public PersonService(IPersonRepository personRepository, IPasswordHasher passwordHasher, IUnitOfWork unitOfWork)
         {
             _personRepository = personRepository;
+            _passwordHasher = passwordHasher;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Person?> AddAsync(string surname, string name, string patronymic, string educationalInstitution, string jobTitle, string city, string phone, string email, bool isVerified, bool isDeleted, string elibraryProfileUrl)
+        public async Task<Person?> AddAsync(string surname, string name, string patronymic, string educationalInstitution, string jobTitle, string city, string phone, string email, bool isVerified, bool isDeleted, string elibraryProfileUrl, string password)
         {
-            Person person = new Person(Guid.NewGuid(), surname, name, patronymic, educationalInstitution, jobTitle, city, phone, email, isVerified, isDeleted, elibraryProfileUrl, "", DateTime.UtcNow);
+
+            var passwordHash = _passwordHasher.Hash(password);
+            Person person = new Person(Guid.NewGuid(), surname, name, patronymic, educationalInstitution, jobTitle, city, phone, email, isVerified, isDeleted, elibraryProfileUrl, "", DateTime.UtcNow, passwordHash);
             try
             {
                 await _personRepository.AddAsync(person);
@@ -45,6 +49,20 @@ namespace ConfHub.Core.Application.Persons.Services
 
                 throw new InvalidOperationException("Нарушено правило уникальности.");
             }
+        }
+
+
+        public async Task<Person?> AuthenticateAsync(string email, string password)
+        {
+            var currnetPerson = await _personRepository.GetPersonByEmailAsync(email);
+            if (currnetPerson != null)
+            {
+                var result = _passwordHasher.Verify(password, currnetPerson.PasswordHash);
+                if(result)
+                    return currnetPerson;
+                else return null;
+            }
+            return null;
         }
 
         public async Task<Person?> GetPersonByEmailAsync(string email)
