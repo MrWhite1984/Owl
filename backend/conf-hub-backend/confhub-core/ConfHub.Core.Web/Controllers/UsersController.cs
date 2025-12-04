@@ -1,7 +1,5 @@
 ﻿using ConfHub.Core.Application.Users.Interfaces;
-using ConfHub.Core.Contracts.Requests.Persons;
 using ConfHub.Core.Contracts.Requests.Users;
-using ConfHub.Core.Contracts.Responses.Persons;
 using ConfHub.Core.Contracts.Responses.Users;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +16,7 @@ namespace ConfHub.Core.Api.Controllers
             _userService = userService;
         }
 
-        [HttpPost]
+        [HttpPost("add-role")]
         public async Task<ActionResult<AddUserResponse>> AddUser([FromBody] AddUserRequest addUserRequest)
         {
             if (!ModelState.IsValid)

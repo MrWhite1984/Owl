@@ -52,9 +52,17 @@ namespace ConfHub.Core.Application.Persons.Services
         }
 
 
-        public Task<Person?> AuthenticateAsync(Guid personId, string password)
+        public async Task<Person?> AuthenticateAsync(string email, string password)
         {
-            throw new NotImplementedException();
+            var currnetPerson = await _personRepository.GetPersonByEmailAsync(email);
+            if (currnetPerson != null)
+            {
+                var result = _passwordHasher.Verify(password, currnetPerson.PasswordHash);
+                if(result)
+                    return currnetPerson;
+                else return null;
+            }
+            return null;
         }
 
         public async Task<Person?> GetPersonByEmailAsync(string email)

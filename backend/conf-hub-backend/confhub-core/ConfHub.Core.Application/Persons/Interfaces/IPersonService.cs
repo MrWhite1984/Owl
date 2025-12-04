@@ -5,7 +5,7 @@ namespace ConfHub.Core.Application.Persons.Interfaces
     public interface IPersonService
     {
         Task<Person?> GetPersonByIdAsync(Guid id);
-        Task<Person?> AuthenticateAsync(Guid personId, string password);
+        Task<Person?> AuthenticateAsync(string email, string password);
         Task<IEnumerable<Person>?> GetPersonsBySurnameAsync(string surname);
         Task<IEnumerable<Person>?> GetPersonsByNameAsync(string name);
         Task<IEnumerable<Person>?> GetPersonsByPatronymicAsync(string patronimyc);

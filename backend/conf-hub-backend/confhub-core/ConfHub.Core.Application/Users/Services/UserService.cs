@@ -43,6 +43,11 @@ namespace ConfHub.Core.Application.Users.Services
             }
         }
 
+        public async Task<bool> HasAnyUserAsync()
+        {
+            var anyUsers = await _userRepository.HasAnyUserAsync();
+            return anyUsers;
+        }
 
         public async Task<IEnumerable<User>> GetUsersByPersonIdAsync(Guid id)
         {
