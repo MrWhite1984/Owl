@@ -37,5 +37,37 @@
             CreatedAt = createdAt;
             PasswordHash = passwordHash;
         }
+
+        public Person Update(
+        string? surname = null,
+        string? name = null,
+        string? patronymic = null,
+        string? educationalInstitution = null,
+        string? jobTitle = null,
+        string? city = null,
+        string? phone = null,
+        string? email = null,
+        bool? isVerified = null,
+        string? elibraryProfileUrl = null,
+        string? newPasswordHash = null)
+        {
+            return new Person(
+                Id,
+                surname ?? Surname,
+                name ?? Name,
+                patronymic ?? Patronymic,
+                educationalInstitution ?? EducationalInstitution,
+                jobTitle ?? JobTitle,
+                city ?? City,
+                phone ?? Phone,
+                email ?? Email,
+                isVerified ?? IsVerified,
+                IsDeleted,
+                elibraryProfileUrl ?? ElibraryProfileUrl,
+                "",
+                CreatedAt,
+                newPasswordHash ?? PasswordHash
+            );
+        }
     }
 }
