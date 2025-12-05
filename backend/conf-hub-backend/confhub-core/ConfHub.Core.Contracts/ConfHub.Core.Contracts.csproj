@@ -12,7 +12,6 @@
     <Folder Include="Requests\ConferenceSettings\" />
     <Folder Include="Requests\News\" />
     <Folder Include="Requests\Notifications\" />
-    <Folder Include="Requests\Persons\" />
     <Folder Include="Requests\Projects\" />
     <Folder Include="Requests\ProjectParticipants\" />
     <Folder Include="Requests\Sections\" />

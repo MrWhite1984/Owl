@@ -129,7 +129,6 @@ namespace ConfHub.Core.Application.Persons.Services
             string? city = null,
             string? phone = null,
             string? email = null,
-            bool? isVerified = null,
             string? elibraryProfileUrl = null,
             string? newPassword = null
             )
@@ -153,7 +152,6 @@ namespace ConfHub.Core.Application.Persons.Services
                     city: city,
                     phone: phone,
                     email: email,
-                    isVerified: isVerified,
                     elibraryProfileUrl: elibraryProfileUrl,
                     newPasswordHash: newPasswordHash
                     );

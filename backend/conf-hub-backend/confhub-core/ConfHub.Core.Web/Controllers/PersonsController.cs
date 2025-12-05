@@ -1,4 +1,5 @@
 ﻿using ConfHub.Core.Application.Persons.Interfaces;
+using ConfHub.Core.Contracts.Requests.Persons;
 using ConfHub.Core.Contracts.Responses.Persons;
 using ConfHub.Core.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -343,6 +344,79 @@ namespace ConfHub.Core.Api.Controllers
             }
         }
 
-        /// ToDo Добавить Update endpoint
+        [HttpPut("update-person-by-id/{id}")]
+        [Authorize]
+        public async Task<ActionResult> UpdatePersonById(Guid id, [FromBody] UpdatePersonRequest updatePersonRequest)
+        {
+            var subClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (subClaim?.Value is not { } subValue || !Guid.TryParse(subValue, out var currentPersonId))
+                return BadRequest("Невозможно определить пользователя из токена.");
+            if (id != currentPersonId && !User.IsInRole(Roles.Admin))
+                return Forbid();
+
+            if (updatePersonRequest.Email != null && string.IsNullOrWhiteSpace(updatePersonRequest.Email))
+                return BadRequest("Email не может быть пустым.");
+            if (updatePersonRequest.Phone != null && string.IsNullOrWhiteSpace(updatePersonRequest.Phone))
+                return BadRequest("Номер телефона не может быть пустым.");
+
+            try
+            {
+                await _personService.UpdateAsync(id,
+                    surname: updatePersonRequest.Surname,
+                    name: updatePersonRequest.Name,
+                    patronymic: updatePersonRequest.Patronymic,
+                    educationalInstitution: updatePersonRequest.EducationalInstitution,
+                    jobTitle: updatePersonRequest.JobTitle,
+                    city: updatePersonRequest.City,
+                    phone: updatePersonRequest.Phone,
+                    email: updatePersonRequest.Email,
+                    elibraryProfileUrl: updatePersonRequest.ElibraryProfileUrl,
+                    password: updatePersonRequest.NewPassword);
+
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("update-person")]
+        [Authorize]
+        public async Task<ActionResult> UpdatePerson(Guid id, [FromBody] UpdatePersonRequest updatePersonRequest)
+        {
+            var subClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (subClaim?.Value is not { } subValue || !Guid.TryParse(subValue, out var currentPersonId))
+                return BadRequest("Невозможно определить пользователя из токена.");
+            if (id != currentPersonId && !User.IsInRole(Roles.Admin))
+                return Forbid();
+
+            if (updatePersonRequest.Email != null && string.IsNullOrWhiteSpace(updatePersonRequest.Email))
+                return BadRequest("Email не может быть пустым.");
+            if (updatePersonRequest.Phone != null && string.IsNullOrWhiteSpace(updatePersonRequest.Phone))
+                return BadRequest("Номер телефона не может быть пустым.");
+
+            try
+            {
+                await _personService.UpdateAsync(currentPersonId,
+                    surname: updatePersonRequest.Surname,
+                    name: updatePersonRequest.Name,
+                    patronymic: updatePersonRequest.Patronymic,
+                    educationalInstitution: updatePersonRequest.EducationalInstitution,
+                    jobTitle: updatePersonRequest.JobTitle,
+                    city: updatePersonRequest.City,
+                    phone: updatePersonRequest.Phone,
+                    email: updatePersonRequest.Email,
+                    elibraryProfileUrl: updatePersonRequest.ElibraryProfileUrl,
+                    password: updatePersonRequest.NewPassword);
+
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
     }
 }

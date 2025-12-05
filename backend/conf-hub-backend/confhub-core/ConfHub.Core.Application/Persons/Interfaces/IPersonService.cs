@@ -15,6 +15,6 @@ namespace ConfHub.Core.Application.Persons.Interfaces
         Task<IEnumerable<Person>?> GetPersonByJobTitleAsync(string jobTitle);
         Task<Person?> GetPersonByEmailAsync(string email);
         Task<Person?> AddAsync(string surname, string name, string patronymic, string educationalInstitution, string jobTitle, string city, string phone, string email, bool isVerified, bool isDeleted, string elibraryProfileUrl, string password);
-        Task UpdateAsync(Guid id, string surname, string name, string patronymic, string educationalInstitution, string jobTitle, string city, string phone, string email, bool isVerified, bool isDeleted, string elibraryProfileUrl, string password);
+        Task UpdateAsync(Guid id, string? surname, string? name, string? patronymic, string? educationalInstitution, string? jobTitle, string? city, string? phone, string? email, string? elibraryProfileUrl, string? password);
     }
 }
