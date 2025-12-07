@@ -101,9 +101,9 @@ namespace ConfHub.Core.Application.Persons.Services
             return currentPersons;
         }
 
-        public async Task<IEnumerable<Person>?> GetPersonsByPartOfFullNameAsync(string partOfFullName)
+        public async Task<IEnumerable<Person>?> GetPersonsByPartOfFullNameAsync(string partOfFullName, string allowedRole)
         {
-            var currentPersons = await _personRepository.GetPersonsByPartOfFullNameAsync(partOfFullName);
+            var currentPersons = await _personRepository.GetPersonsByPartOfFullNameAsync(partOfFullName, allowedRole);
             return currentPersons;
         }
 
@@ -119,10 +119,65 @@ namespace ConfHub.Core.Application.Persons.Services
             return currentPersons;
         }
 
-        public async Task UpdateAsync(Person person)
+        public async Task UpdateAsync(
+            Guid id,
+            string? surname = null,
+            string? name = null,
+            string? patronymic = null,
+            string? educationalInstitution = null,
+            string? jobTitle = null,
+            string? city = null,
+            string? phone = null,
+            string? email = null,
+            string? elibraryProfileUrl = null,
+            string? newPassword = null
+            )
         {
-            _personRepository.Update(person);
-            await _unitOfWork.SaveChangesAsync();
+            try
+            {
+                var currentPerson = await _personRepository.GetPersonByIdAsync(id)
+        ?? throw new InvalidOperationException("Пользователь не найден.");
+
+                string? newPasswordHash = null;
+                if (!string.IsNullOrEmpty(newPassword))
+                {
+                    newPasswordHash = _passwordHasher.Hash(newPassword);
+                }
+                var updatedPerson = currentPerson.Update(
+                    surname: surname,
+                    name: name,
+                    patronymic: patronymic,
+                    educationalInstitution: educationalInstitution,
+                    jobTitle: jobTitle,
+                    city: city,
+                    phone: phone,
+                    email: email,
+                    elibraryProfileUrl: elibraryProfileUrl,
+                    newPasswordHash: newPasswordHash
+                    );
+
+                _personRepository.Update(updatedPerson);
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                var postgresEx = ex.InnerException as PostgresException
+                   ?? ex.InnerException?.InnerException as PostgresException;
+
+                if (postgresEx != null && postgresEx.SqlState == PostgresErrorCodes.UniqueViolation)
+                {
+                    if (postgresEx.ConstraintName != null)
+                    {
+                        if (postgresEx.ConstraintName.Contains("email", StringComparison.OrdinalIgnoreCase))
+                            throw new InvalidOperationException("Email уже зарегистрирован.");
+                        if (postgresEx.ConstraintName.Contains("phone", StringComparison.OrdinalIgnoreCase))
+                            throw new InvalidOperationException("Номер телефона уже зарегистрирован.");
+                    }
+                    throw new InvalidOperationException("Нарушено правило уникальности.");
+                }
+
+                throw new InvalidOperationException("Нарушено правило уникальности.");
+            }
         }
     }
 }

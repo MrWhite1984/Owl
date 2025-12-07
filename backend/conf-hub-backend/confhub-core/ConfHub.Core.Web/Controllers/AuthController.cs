@@ -3,7 +3,6 @@ using ConfHub.Core.Application.Persons.Interfaces;
 using ConfHub.Core.Application.Users.Interfaces;
 using ConfHub.Core.Contracts.Requests.Auth;
 using ConfHub.Core.Contracts.Responses.Auth;
-using ConfHub.Core.Domain.Entities;
 using ConfHub.Core.Domain.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;

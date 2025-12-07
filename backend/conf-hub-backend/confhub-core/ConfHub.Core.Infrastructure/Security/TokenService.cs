@@ -31,8 +31,8 @@ namespace ConfHub.Core.Infrastructure.Security
         {
             var claims = new[]
             {
-                new Claim("sub", personId.ToString()),
-                new Claim("role", role)
+                new Claim(ClaimTypes.NameIdentifier, personId.ToString()),
+                new Claim(ClaimTypes.Role, role)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));

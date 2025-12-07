@@ -8,7 +8,7 @@ namespace ConfHub.Core.Application.Persons.Interfaces
         Task<IEnumerable<Person>?> GetPersonsBySurnameAsync(string surname);
         Task<IEnumerable<Person>?> GetPersonsByNameAsync(string name);
         Task<IEnumerable<Person>?> GetPersonsByPatronymicAsync(string patronimyc);
-        Task<IEnumerable<Person>?> GetPersonsByPartOfFullNameAsync(string partOfFullName);
+        Task<IEnumerable<Person>?> GetPersonsByPartOfFullNameAsync(string partOfFullName, string allowedRoles);
         Task<IEnumerable<Person>?> GetPersonsByEducationalInstitutionAsync(string educationalInstitution);
         Task<IEnumerable<Person>?> GetPersonsByCityAsync(string city);
         Task<IEnumerable<Person>?> GetPersonByJobTitleAsync(string jobTitle);
