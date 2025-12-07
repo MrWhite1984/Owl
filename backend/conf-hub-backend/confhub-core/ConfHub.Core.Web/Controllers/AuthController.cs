@@ -72,7 +72,7 @@ namespace ConfHub.Core.Api.Controllers
                     registrationRequest.City,
                     registrationRequest.Phone,
                     registrationRequest.Email,
-                    registrationRequest.IsVerified,
+                    false,
                     false,
                     registrationRequest.ElibraryProfileUrl,
                     registrationRequest.Password);

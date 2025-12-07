@@ -93,6 +93,17 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalFrontend", policy =>
+    {
+        policy.WithOrigins("http://127.0.0.1:8080", "http://localhost:8080", "http://127.0.0.1:5500") // live-server
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // важно для отправки cookies (если вдруг понадобятся)
+    });
+});
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -130,6 +141,8 @@ app.UseHttpsRedirection();
 app.UseRouting();    
 app.UseAuthentication();       
 app.UseAuthorization();
+
+app.UseCors("AllowLocalFrontend");
 
 app.MapControllers();
 
