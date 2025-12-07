@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Conf-Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="/js/auth.js"></script>
+    <script src="/js/i18n.js"></script>
+    <script src="/js/core.js"></script>
+    <link rel="stylesheet" href="/assets/css/theme.css" />
+</head>
+
+<body class="min-h-screen flex flex-col">
+    <header class="navbar bg-base-100 shadow h-16">
+        <!-- Левая часть: всегда есть -->
+        <div class="navbar-start">
+            <button class="btn btn-ghost btn-square" onclick="toggleSidebar()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Центр: логотип -->
+        <div class="navbar-center">
+            <!-- <img src="/assets/logo.svg" class="h-8" /> -->
+        </div>
+
+        <!-- Правая часть: для гостей -->
+        <div class="navbar-end flex items-center space-x-2" id="guest-controls">
+            <div class="dropdown dropdown-end">
+                <label tabindex="0" class="btn btn-xs btn-ghost">
+                    <!-- Иконка глобуса (опционально) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 5h18M3 19h18M7 12h10M3 12h4m10 0h4" />
+                    </svg>
+                    <span id="current-lang">RU</span>
+                </label>
+                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-24 mt-1">
+                    <li><a onclick="switchLanguage('ru')">RU Русский</a></li>
+                    <li><a onclick="switchLanguage('en')">ENG English</a></li>
+                </ul>
+            </div>
+            <a class="btn btn-outline btn-sm" data-i18n="login.submit" href="pages/auth/login.html">Вход</a>
+        </div>
+
+        <!-- Правая часть: для авторизованных -->
+        <div class="navbar-end flex items-center space-x-2 hidden" id="user-controls">
+            <div class="dropdown dropdown-end">
+                <label tabindex="0" class="btn btn-xs btn-ghost">
+                    <!-- Иконка глобуса (опционально) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 5h18M3 19h18M7 12h10M3 12h4m10 0h4" />
+                    </svg>
+                    <span id="current-lang">RU</span>
+                </label>
+                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-24 mt-1">
+                    <li><a onclick="switchLanguage('ru')">RU Русский</a></li>
+                    <li><a onclick="switchLanguage('en')">ENG English</a></li>
+                </ul>
+            </div>
+
+            <!-- Уведомления -->
+            <div class="dropdown dropdown-end">
+                <label tabindex="0" class="btn btn-ghost btn-circle">
+                    <div class="indicator">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 17h5l-5 5v-5zM9 7H4l5-5v5z" />
+                        </svg>
+                        <span class="badge badge-xs badge-secondary indicator-item">3</span>
+                    </div>
+                </label>
+                <div tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-64 mt-4">
+                    <div class="font-bold" data-i18n="header.Notification">Уведомления</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-300">Новых: 3</div>
+                </div>
+            </div>
+
+            <!-- Профиль -->
+            <div class="dropdown dropdown-end">
+                <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+                    <div class="w-8 rounded-full bg-primary text-white flex items-center justify-center">
+                        А
+                    </div>
+                </label>
+                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 mt-4">
+                    <li><a href="#" data-page="/pages/profile.html" data-i18n="header.profile">Профиль</a></li>
+                    <li><a href="#" data-page="/pages/settings.html" data-i18n="header.settings">Настройки</a></li>
+                    <li><a onclick="Auth.logout()" data-i18n="header.logout">Выйти</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <main id="page-content" class="flex-grow p-4">
+
+    </main>
+    <footer class="footer footer-center p-4 bg-base-300 text-base-content">
+        <div>
+            <p data-i18n="footer.copyright">© 2025 ConfHub. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
+
+<script>
+    function updateHeader() {
+        const isAuthenticated = Auth.isAuthenticated();
+        const guestEl = document.getElementById('guest-controls');
+        const userEl = document.getElementById('user-controls');
+
+        if (isAuthenticated) {
+            guestEl.classList.add('hidden');
+            userEl.classList.remove('hidden');
+        } else {
+            guestEl.classList.remove('hidden');
+            userEl.classList.add('hidden');
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', async () => {
+        let pagePath;
+        if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+            pagePath = '/pages/public/news.html';
+        } else {
+            pagePath = window.location.pathname;
+        }
+
+        try {
+            await core.loadPage(pagePath);
+            updateHeader();
+        } catch (err) {
+            console.error('Failed to load page:', err);
+            document.getElementById('page-content').innerHTML = '<p>Ошибка загрузки страницы</p>';
+        }
+    });
+
+</script>

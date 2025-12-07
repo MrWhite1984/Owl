@@ -1,0 +1,16 @@
+/* assets/css/theme.css */
+:root {
+  --color-light: #FFFAFA;  /* из ТЗ: светлая тема */
+  --color-dark: #293133;   /* из ТЗ: тёмная тема */
+}
+
+body {
+  background-color: var(--color-light);
+  color: #000;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark {
+  background-color: var(--color-dark);
+  color: #f9f9f9;
+}
