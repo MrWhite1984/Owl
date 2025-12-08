@@ -10,6 +10,7 @@
   "login.noAccount": "Нет аккаунта?",
   "login.register": "Зарегистрироваться",
   "news.headline": "Новости",
+  "news.loading": "Загрузка...",
   "register.title": "Регистрация",
   "register.surname": "Фамилия",
   "register.name": "Имя",
