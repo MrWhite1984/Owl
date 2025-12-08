@@ -10,7 +10,6 @@
     <Folder Include="Requests\ChatMessages\" />
     <Folder Include="Requests\Conferences\" />
     <Folder Include="Requests\ConferenceSettings\" />
-    <Folder Include="Requests\News\" />
     <Folder Include="Requests\Notifications\" />
     <Folder Include="Requests\Projects\" />
     <Folder Include="Requests\ProjectParticipants\" />
@@ -18,7 +17,6 @@
     <Folder Include="Responses\ChatMessages\" />
     <Folder Include="Responses\Conferences\" />
     <Folder Include="Responses\ConferenceSettings\" />
-    <Folder Include="Responses\News\" />
     <Folder Include="Responses\Notifications\" />
     <Folder Include="Responses\Projects\" />
     <Folder Include="Responses\ProjectParticipants\" />

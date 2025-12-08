@@ -1,6 +1,7 @@
 ﻿using ConfHub.Core.Application.Common.Interfaces;
 using ConfHub.Core.Application.News.Interfaces;
 using ConfHub.Core.Application.News.Services;
+using ConfHub.Core.Application.Persons.Interfaces;
 using Moq;
 
 namespace ConfHub.Core.Application.UnitTests.Service
@@ -10,9 +11,10 @@ namespace ConfHub.Core.Application.UnitTests.Service
         [Fact]
         public async Task AddAsync_CreatesNewsWithCorrectProperties()
         {
-            var mockRepo = new Mock<INewsRepository>();
+            var mockRepoNews = new Mock<INewsRepository>();
+            var mockRepoPersons = new Mock<IPersonRepository>();
             var mockUow = new Mock<IUnitOfWork>();
-            var service = new NewsService(mockRepo.Object, mockUow.Object);
+            var service = new NewsService(mockRepoNews.Object, mockRepoPersons.Object, mockUow.Object);
 
             string title = "News";
             string content = "News content";
@@ -20,7 +22,7 @@ namespace ConfHub.Core.Application.UnitTests.Service
 
             await service.AddAsync(title, content, authorId);
 
-            mockRepo.Verify(r => r.AddAsync(It.Is<Domain.Entities.News>(m =>
+            mockRepoNews.Verify(r => r.AddAsync(It.Is<Domain.Entities.News>(m =>
                 m.Title == title &&
                 m.Content == content &&
                 m.AuthorPersonId == authorId

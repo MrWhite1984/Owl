@@ -11,7 +11,7 @@ namespace ConfHub.Core.Infrastructure.Persistence.Configurations
             builder.ToTable("News");
             builder.HasKey(x => x.Id);
 
-            builder.HasOne<Person>().WithMany().HasForeignKey(x => x.Id);
+            builder.HasOne<Person>().WithMany().HasForeignKey(x => x.AuthorPersonId);
         }
     }
 }

@@ -18,6 +18,12 @@ namespace ConfHub.Core.Infrastructure.Persistence.Repositories
             await _appDbContext.Persons.AddAsync(person);
         }
 
+        public async Task<IEnumerable<Person>> GetPersonsByIdsAsync(IEnumerable<Guid> ids)
+        {
+            var currentPersons = await _appDbContext.Persons.Where(o => ids.Contains(o.Id)).ToListAsync();
+            return currentPersons;
+        }
+
         public async Task<Person?> GetPersonByEmailAsync(string email)
         {
             var currentPerson = await _appDbContext.Persons.FirstOrDefaultAsync(x => x.Email.Equals(email));
