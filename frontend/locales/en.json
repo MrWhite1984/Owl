@@ -3,6 +3,7 @@
   "header.settings": "Settings",
   "header.logout": "Log out",
   "header.Notification": "Notifications",
+  "header.current-lang": "ENG",
   "login.title": "Welcome back",
   "login.email": "Email",
   "login.password": "Password",
@@ -11,6 +12,7 @@
   "login.register": "Register",
   "news.headline": "News",
   "news.loading": "Loading...",
+  "news.create-news-button": "Create news",
   "register.title": "Registration",
   "register.surname": "Surname",
   "register.name": "Name",
@@ -26,5 +28,10 @@
   "register.haveAccount": "Have account?",
   "register.login": "Login",
   "role-select.headline": "Select role",
+  "create-news.title": "Create news",
+  "create-news.title-label": "News title",
+  "create-news.content-label": "News content",
+  "create-news.submit": "Submit",
+  "create-news.cancel": "Cancel",
   "footer.copyright": "© 2025 ConfHub. All rights reserved."
 }

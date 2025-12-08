@@ -1,0 +1,32 @@
+<!-- pages/admin/create-news.html (шаблон) -->
+<div class="create-news-page" data-page="create_news">
+  <h1 data-i18n="create-news.title" class="text-3xl font-bold mb-6">Создать новость</h1>
+
+  <form id="create-news-form" class="space-y-4">
+    <div>
+      <label for="news-title" data-i18n="create-news.title-label">Заголовок</label>
+      <input
+        type="text"
+        id="news-title"
+        class="input input-bordered w-full"
+        required
+        maxlength="200"
+      />
+    </div>
+
+    <div>
+      <label for="news-content" data-i18n="create-news.content-label">Текст новости</label>
+      <textarea
+        id="news-content"
+        class="textarea textarea-bordered w-full"
+        rows="8"
+        required
+      ></textarea>
+    </div>
+
+    <div class="flex gap-3 pt-2">
+      <button type="submit" class="btn btn-success" data-i18n="create-news.submit">Опубликовать</button>
+      <button type="button" id="cancel-create" class="btn" data-i18n="create-news.cancel">Отмена</button>
+    </div>
+  </form>
+</div>

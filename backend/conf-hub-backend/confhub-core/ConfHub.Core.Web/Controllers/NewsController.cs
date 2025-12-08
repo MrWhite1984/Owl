@@ -2,6 +2,8 @@
 using ConfHub.Core.Contracts.Requests.News;
 using ConfHub.Core.Contracts.Responses.News;
 using ConfHub.Core.Domain.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -61,6 +63,7 @@ namespace ConfHub.Core.Api.Controllers
         }
 
         [HttpPost("create-news")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<CreateNewsResponse>> CreateNews([FromBody] CreateNewsRequest createNewsRequest)
         {
             if (!ModelState.IsValid)
@@ -88,6 +91,7 @@ namespace ConfHub.Core.Api.Controllers
         }
 
         [HttpDelete("delete-news/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> DeleteNews(Guid id)
         {
             if (!ModelState.IsValid)

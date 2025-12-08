@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="/js/auth.js"></script>
     <script src="/js/i18n.js"></script>
-    <script src="/js/core.js"></script>
+    <script type="module" src="/js/core.js"></script>
     <link rel="stylesheet" href="/assets/css/theme.css" />
 </head>
 
@@ -59,7 +59,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 5h18M3 19h18M7 12h10M3 12h4m10 0h4" />
                     </svg>
-                    <span id="current-lang">RU</span>
+                    <span id="current-lang" data-i18n="header.current-lang">RU</span>
                 </label>
                 <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-24 mt-1">
                     <li><a onclick="switchLanguage('ru')">RU Русский</a></li>

@@ -3,6 +3,7 @@
   "header.settings": "Настройки",
   "header.logout": "Выйти",
   "header.Notification": "Уведомления",
+  "header.current-lang": "РУС",
   "login.title": "С возвращением",
   "login.email": "Email",
   "login.password": "Пароль",
@@ -11,6 +12,7 @@
   "login.register": "Зарегистрироваться",
   "news.headline": "Новости",
   "news.loading": "Загрузка...",
+  "news.create-news-button": "Создать новость",
   "register.title": "Регистрация",
   "register.surname": "Фамилия",
   "register.name": "Имя",
@@ -26,5 +28,10 @@
   "register.haveAccount": "Уже есть аккаунт?",
   "register.login": "Войти",
   "role-select.headline": "Выберите роль",
+  "create-news.title": "Создать новость",
+  "create-news.title-label": "Заголовок новости",
+  "create-news.content-label": "Текст новости",
+  "create-news.submit": "Создать",
+  "create-news.cancel": "Отмена",
   "footer.copyright": "© 2025 ConfHub. Все права защищены."
 }
