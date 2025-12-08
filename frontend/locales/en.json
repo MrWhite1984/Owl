@@ -10,6 +10,7 @@
   "login.noAccount": "Don't have an account?",
   "login.register": "Register",
   "news.headline": "News",
+  "news.loading": "Loading...",
   "register.title": "Registration",
   "register.surname": "Surname",
   "register.name": "Name",
