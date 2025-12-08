@@ -1,4 +1,5 @@
-﻿using ConfHub.Core.Application.News.Interfaces;
+﻿using ConfHub.Core.Application.News.DTO;
+using ConfHub.Core.Application.News.Interfaces;
 using ConfHub.Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,10 +30,10 @@ namespace ConfHub.Core.Infrastructure.Persistence.Repositories
             return currentNews;
         }
 
-        public async Task<IEnumerable<News>> GetPartOfNewsByDateTimeAsync(DateTime startDateTime, int partSize)
+        public async Task<PartNewsDto> GetPartOfNewsByDateTimeAsync(DateTime startDateTime, int partSize)
         {
             var currentNews = await _appDbContext.News.OrderByDescending(x => x.PublishedAt).Where(x => x.PublishedAt < startDateTime).Take(partSize + 1).ToListAsync();
-            return currentNews;
+            return new PartNewsDto(currentNews.Take(partSize).ToList(), currentNews.Last().PublishedAt);
         }
 
         public void Update(News entity)
