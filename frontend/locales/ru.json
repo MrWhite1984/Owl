@@ -4,6 +4,10 @@
   "header.logout": "Выйти",
   "header.Notification": "Уведомления",
   "header.current-lang": "РУС",
+  "menu.news": "Новости",
+  "menu.conferences-list": "Конференции",
+
+  "menu.admin.users": "Пользователи",
   "login.title": "С возвращением",
   "login.email": "Email",
   "login.password": "Пароль",
@@ -33,5 +37,6 @@
   "create-news.content-label": "Текст новости",
   "create-news.submit": "Создать",
   "create-news.cancel": "Отмена",
+  "conferences.title": "Конференции",
   "footer.copyright": "© 2025 ConfHub. Все права защищены."
 }

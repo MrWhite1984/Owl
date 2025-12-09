@@ -4,6 +4,10 @@
   "header.logout": "Log out",
   "header.Notification": "Notifications",
   "header.current-lang": "ENG",
+  "menu.news": "News",
+  "menu.conferences-list": "Conferences",
+
+  "menu.admin.users": "Users",
   "login.title": "Welcome back",
   "login.email": "Email",
   "login.password": "Password",
@@ -33,5 +37,6 @@
   "create-news.content-label": "News content",
   "create-news.submit": "Submit",
   "create-news.cancel": "Cancel",
+  "conferences.title": "Conferences",
   "footer.copyright": "© 2025 ConfHub. All rights reserved."
 }

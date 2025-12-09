@@ -7,11 +7,9 @@ const Auth = {
             const token = this.getToken();
             if (!token) return [];
 
-            // JWT: header.payload.signature → берем payload
             const payloadBase64 = token.split('.')[1];
             if (!payloadBase64) return [];
 
-            // base64url → base64 (для atob())
             const base64 = payloadBase64.replace(/-/g, '+').replace(/_/g, '/');
             const jsonPayload = atob(base64);
             const payload = JSON.parse(jsonPayload);
@@ -42,11 +40,10 @@ const Auth = {
     logout() {
         localStorage.removeItem('authToken');
         localStorage.removeItem('selectedRole');
-        // Обновляем UI (вызывается из `index.html`)
         if (typeof updateHeader === 'function') {
             updateHeader();
+            updateSidebarMenu(localStorage.getItem("selectedRole"));
         }
-        // Перенаправление без перезагрузки страницы
         if (typeof core !== 'undefined' && core.loadPage) {
             core.loadPage('/pages/public/news.html');
         } else {
@@ -60,9 +57,9 @@ const Auth = {
         if (roles.length === 1) {
             localStorage.setItem('selectedRole', roles[0]);
         }
-        // Обновляем UI
         if (typeof updateHeader === 'function') {
             updateHeader();
+            updateSidebarMenu(localStorage.getItem("selectedRole"));
         }
     },
 

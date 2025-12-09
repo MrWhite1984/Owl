@@ -10,6 +10,30 @@
     <script src="/js/i18n.js"></script>
     <script type="module" src="/js/core.js"></script>
     <link rel="stylesheet" href="/assets/css/theme.css" />
+    <style>
+        /* Плавное выдвижение меню */
+        .sidebar {
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-open {
+            transform: translateX(0);
+        }
+
+        .sidebar-closed {
+            transform: translateX(-100%);
+        }
+
+        /* Оверлей */
+        .overlay {
+            transition: opacity 0.3s ease;
+        }
+
+        .overlay-hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
 </head>
 
 <body class="min-h-screen flex flex-col">
@@ -42,7 +66,7 @@
                     <span id="current-lang">RU</span>
                 </label>
                 <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-24 mt-1">
-                    <li><a onclick="switchLanguage('ru')">RU Русский</a></li>
+                    <li><a onclick="switchLanguage('ru')">РУС Русский</a></li>
                     <li><a onclick="switchLanguage('en')">ENG English</a></li>
                 </ul>
             </div>
@@ -62,7 +86,7 @@
                     <span id="current-lang" data-i18n="header.current-lang">RU</span>
                 </label>
                 <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-24 mt-1">
-                    <li><a onclick="switchLanguage('ru')">RU Русский</a></li>
+                    <li><a onclick="switchLanguage('ru')">РУС Русский</a></li>
                     <li><a onclick="switchLanguage('en')">ENG English</a></li>
                 </ul>
             </div>
@@ -100,6 +124,24 @@
             </div>
         </div>
     </header>
+    <aside id="sidebar" class="sidebar fixed left-0 top-0 h-full w-64 bg-base-100 shadow-lg z-40 sidebar-closed">
+        <div class="flex items-center p-4 border-b">
+            <h2 class="text-xl font-bold">ConfHub</h2>
+            <button id="close-sidebar-btn" class="btn btn-ghost btn-sm ml-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <nav id="sidebar-menu" class="p-2 space-y-1 mt-2">
+            <!-- Динамически заполнится -->
+        </nav>
+    </aside>
+
+    <!-- Оверлей для мобильных -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-40 z-30 overlay overlay-hidden"></div>
+
     <main id="page-content" class="flex-grow p-4">
 
     </main>
@@ -113,6 +155,94 @@
 </html>
 
 <script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        const isClosed = sidebar.classList.contains('sidebar-closed');
+
+        if (isClosed) {
+            sidebar.classList.remove('sidebar-closed');
+            sidebar.classList.add('sidebar-open');
+            overlay.classList.remove('overlay-hidden');
+        } else {
+            sidebar.classList.remove('sidebar-open');
+            sidebar.classList.add('sidebar-closed');
+            overlay.classList.add('overlay-hidden');
+        }
+    }
+
+    document.getElementById('close-sidebar-btn')?.addEventListener('click', toggleSidebar);
+    document.getElementById('sidebar-overlay')?.addEventListener('click', toggleSidebar);
+
+    function getUserRole() {
+        const token = localStorage.getItem('token');
+        if (!token) return null;
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            return payload.role || null;
+        } catch (e) {
+            console.warn('Invalid token', e);
+            return null;
+        }
+    }
+
+    function getMenuItems(role) {
+        const items = [];
+
+        items.push({ textKey: 'menu.news', href: '/pages/public/news.html' });
+        items.push({ textKey: 'menu.conferences-list', href: '/pages/public/conferences-list.html' });
+
+        if (role) {
+
+            if (['ADMIN', 'MODERATOR', 'SECTION_ADMIN'].includes(role)) {
+
+            }
+
+            if (role === 'ADMIN') {
+                items.push({ textKey: 'menu.admin.users', href: '/pages/admin/users.html' });
+            }
+        } else {
+        }
+
+        return items;
+    }
+
+    function updateSidebarMenu(role) {
+        const menuEl = document.getElementById('sidebar-menu');
+        if (!menuEl) return;
+
+        const items = getMenuItems(role);
+        menuEl.innerHTML = '';
+
+        items.forEach(item => {
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-ghost w-full justify-start px-4 py-3 text-left';
+            btn.dataset.i18n = item.textKey;
+            btn.textContent = item.textKey;
+
+            if (item.action === 'logout') {
+                btn.addEventListener('click', () => {
+                    localStorage.removeItem('token');
+                    updateHeader();
+                    updateSidebarMenu(null);
+                    toggleSidebar();
+                    core.loadPage('/pages/public/news.html');
+                });
+            } else {
+                btn.addEventListener('click', () => {
+                    toggleSidebar();
+                    core.loadPage(item.href);
+                });
+            }
+
+            menuEl.appendChild(btn);
+        });
+
+        if (typeof applyTranslations === 'function') {
+            applyTranslations(menuEl);
+        }
+    }
+
     function updateHeader() {
         const isAuthenticated = Auth.isAuthenticated();
         const guestEl = document.getElementById('guest-controls');
@@ -135,13 +265,16 @@
             pagePath = window.location.pathname;
         }
 
+        const userRole = getUserRole();
+
+        updateHeader();
+        updateSidebarMenu(localStorage.getItem("selectedRole"));
+
         try {
             await core.loadPage(pagePath);
-            updateHeader();
         } catch (err) {
             console.error('Failed to load page:', err);
             document.getElementById('page-content').innerHTML = '<p>Ошибка загрузки страницы</p>';
         }
     });
-
 </script>
