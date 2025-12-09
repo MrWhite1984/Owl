@@ -32,7 +32,10 @@ window.t = t;
 window.switchLanguage = (lang) => {
   localStorage.setItem('lang', lang);
   currentLang = lang;
-  loadTranslations().then(applyTranslations);
+  loadTranslations().then(() => {
+    applyTranslations();
+    window.dispatchEvent(new Event('languageChanged'));
+  });
   if (document.getElementById('current-lang')) {
     document.getElementById('current-lang').textContent = lang.toUpperCase();
   }

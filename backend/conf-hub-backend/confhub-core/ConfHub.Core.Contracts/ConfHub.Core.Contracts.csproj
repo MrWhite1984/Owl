@@ -15,7 +15,6 @@
     <Folder Include="Requests\ProjectParticipants\" />
     <Folder Include="Requests\Sections\" />
     <Folder Include="Responses\ChatMessages\" />
-    <Folder Include="Responses\Conferences\" />
     <Folder Include="Responses\ConferenceSettings\" />
     <Folder Include="Responses\Notifications\" />
     <Folder Include="Responses\Projects\" />

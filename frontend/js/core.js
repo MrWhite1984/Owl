@@ -7,6 +7,10 @@ const core = {
     create_news: async () =>{
       const module = await import('../pages/news/create-news.js');
       module.init?.();
+    },
+    conferences_page: async () => {
+      const module = await import('../pages/public/conferences.js');
+      module.init?.();
     }
   },
 
