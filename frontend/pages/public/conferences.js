@@ -37,7 +37,7 @@ function renderConferences(conferences) {
 
   listEl.innerHTML = '';
 
-    
+
 
   if (!Array.isArray(conferences) || conferences.length === 0) {
     listUl.innerHTML = '<p data-i18n="conferences.empty">Нет доступных конференций</p>';
@@ -49,21 +49,21 @@ function renderConferences(conferences) {
   const selectedRole = localStorage.getItem("selectedRole");
 
   // Кнопка создания
-    if (selectedRole === "ADMIN") {
-      const addNewsBtn = document.createElement('button');
-      addNewsBtn.innerText = 'Создать конференцию';
-      addNewsBtn.setAttribute('data-i18n', 'conferences.create-conference-button');
-      addNewsBtn.classList.add('btn');
-      addNewsBtn.addEventListener('click', async () => {
-        try {
-          await core.loadPage('../pages/conferences/create-conference.html');
-        } catch (err) {
-          console.error('Failed to load page:', err);
-          document.getElementById('page-content').innerHTML = '<p>Ошибка загрузки страницы</p>';
-        }
-      });
-      listEl.appendChild(addNewsBtn);
-    }
+  if (selectedRole === "ADMIN") {
+    const addNewsBtn = document.createElement('button');
+    addNewsBtn.innerText = 'Создать конференцию';
+    addNewsBtn.setAttribute('data-i18n', 'conferences.create-conference-button');
+    addNewsBtn.classList.add('btn');
+    addNewsBtn.addEventListener('click', async () => {
+      try {
+        await core.loadPage('../pages/conferences/create-conference.html');
+      } catch (err) {
+        console.error('Failed to load page:', err);
+        document.getElementById('page-content').innerHTML = '<p>Ошибка загрузки страницы</p>';
+      }
+    });
+    listEl.appendChild(addNewsBtn);
+  }
 
   conferences.forEach(conf => {
     const card = document.createElement('div');
@@ -86,7 +86,10 @@ function renderConferences(conferences) {
 
     card.addEventListener('click', () => {
       if (window.core?.loadPage) {
-        window.core.loadPage(`/pages/public/conference.html?id=${conf.id}`);
+        // Сохраняем ID во временную глобальную переменную
+        window.__spa_conferenceId = conf.id;
+        // Загружаем страницу БЕЗ изменения URL
+        window.core.loadPage('/pages/public/conference.html');
       }
     });
 

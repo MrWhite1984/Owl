@@ -22,6 +22,28 @@ export function init() {
 
   if (noMoreEl) noMoreEl.style.display = 'none';
 
+  function autolinkUrls(text) {
+    if (!text) return '';
+
+    // Экранируем весь текст как HTML-сущности
+    const div = document.createElement('div');
+    div.textContent = text;
+    let escapedText = div.innerHTML;
+
+    // Регулярное выражение для поиска URL
+    const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/g;
+
+    // Заменяем каждый найденный URL на <a>
+    return escapedText.replace(urlRegex, url => {
+      try {
+        new URL(url); // проверка валидности
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="link link-primary">${url}</a>`;
+      } catch {
+        return url; // если не URL — оставляем как есть
+      }
+    });
+  }
+
 
   // Функция рендера одной новости
   function renderNewsItem(newsItem) {
@@ -47,7 +69,7 @@ export function init() {
     const patronymic = escapeHtml(author.patronymic || '');
     const jobTitle = escapeHtml(author.jobTitle || '');
     const title = escapeHtml(newsItem.title || '');
-    const content = escapeHtml(newsItem.content || '');
+    const content = autolinkUrls(newsItem.content || '');
     const currentLang = localStorage.getItem('lang') || (navigator.language.startsWith('ru') ? 'ru' : 'en');
     const date = newsItem.createdAt
       ? new Date(newsItem.createdAt).toLocaleDateString(currentLang, {

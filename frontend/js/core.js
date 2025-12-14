@@ -11,6 +11,10 @@ const core = {
     conferences_page: async () => {
       const module = await import('../pages/public/conferences.js');
       module.init?.();
+    },
+    conference: async () => {
+      const module = await import('../pages/public/conference.js');
+      module.init?.();
     }
   },
 

@@ -41,5 +41,10 @@
   "conferences.status": "Статус",
   "conferences.created-at": "Дата начала",
   "conferences.create-conference-button": "Создать конференцию",
+  "conference.title": "О конференции",
+  "conference.start-date": "Дата начала",
+  "conference.collection-url": "Ссылка на сборник",
+  "conference.max-articles": "Максимальное количество статей для одного автора",
+  "conference.online-defence": "Доступна онлайн защита",
   "footer.copyright": "© 2025 ConfHub. Все права защищены."
 }

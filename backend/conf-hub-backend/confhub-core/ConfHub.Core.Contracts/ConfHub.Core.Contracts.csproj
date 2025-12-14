@@ -17,9 +17,6 @@
     <Folder Include="Responses\ChatMessages\" />
     <Folder Include="Responses\ConferenceSettings\" />
     <Folder Include="Responses\Notifications\" />
-    <Folder Include="Responses\Projects\" />
-    <Folder Include="Responses\ProjectParticipants\" />
-    <Folder Include="Responses\Sections\" />
   </ItemGroup>
 
 </Project>

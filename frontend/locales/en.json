@@ -41,5 +41,10 @@
   "conferences.status": "Status",
   "conferences.created-at": "Start date",
   "conferences.create-conference-button": "Create conference",
+  "conference.title": "About the conference",
+  "conference.start-date": "Start date",
+  "conference.collection-url": "Link to the collection",
+  "conference.max-articles": "Maximum number of articles per author",
+  "conference.online-defence": "Online protection is available",
   "footer.copyright": "© 2025 ConfHub. All rights reserved."
 }
