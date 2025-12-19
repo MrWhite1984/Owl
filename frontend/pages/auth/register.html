@@ -51,6 +51,7 @@
     </div>
 
     <script>
+        import { API_ROUTES } from '/js/config/api.js';
         document.getElementById('registrationForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -72,7 +73,7 @@
             errorEl.textContent = '';
 
             try {
-                const res = await fetch('https://localhost:7077/api/Auth/registration', {
+                const res = await fetch(API_ROUTES.auth.registration, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)

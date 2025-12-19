@@ -4,6 +4,7 @@
   "header.logout": "Выйти",
   "header.Notification": "Уведомления",
   "header.current-lang": "РУС",
+  "common.loading": "Загрузка...",
   "menu.news": "Новости",
   "menu.conferences-list": "Конференции",
 

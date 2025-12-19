@@ -15,19 +15,22 @@
         <div class="card-body">
             <h1 class="card-title" data-i18n="login.title">С возвращением</h1>
             <form id="loginForm">
-                <input type="email" id="email" data-i18n-ph="login.email" placeholder="Email" class="input input-bordered w-full mb-3" required />
-                <input type="password" id="password" data-i18n-ph="login.password" placeholder="Пароль" class="input input-bordered w-full mb-4"
-                    required />
+                <input type="email" id="email" data-i18n-ph="login.email" placeholder="Email"
+                    class="input input-bordered w-full mb-3" required />
+                <input type="password" id="password" data-i18n-ph="login.password" placeholder="Пароль"
+                    class="input input-bordered w-full mb-4" required />
                 <button type="submit" data-i18n="login.submit" class="btn btn-primary w-full">Войти</button>
             </form>
-            <div class="text-center mt-4" >
-                <span data-i18n="login.noAccount">Нет аккаунта?</span> <a href="/pages/auth/register.html" data-i18n="login.register" class="link link-primary">Зарегистрироваться</a>
+            <div class="text-center mt-4">
+                <span data-i18n="login.noAccount">Нет аккаунта?</span> <a href="/pages/auth/register.html"
+                    data-i18n="login.register" class="link link-primary">Зарегистрироваться</a>
             </div>
             <div id="error" class="text-red-500 text-sm mt-2 min-h-[20px]"></div>
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { API_ROUTES } from '/js/config/api.js';
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
@@ -36,7 +39,7 @@
             errorEl.textContent = '';
 
             try {
-                const res = await fetch('https://localhost:7077/api/Auth/login', {
+                const res = await fetch(API_ROUTES.auth.login, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
@@ -70,8 +73,8 @@
                     localStorage.setItem('selectedRole', userRoles[0]);
                     window.location.href = '/';
                 }
-                else{
-                    window.location.href ='role-select.html'
+                else {
+                    window.location.href = 'role-select.html'
                 }
             } catch (err) {
                 errorEl.textContent = err.message || 'Ошибка подключения';
