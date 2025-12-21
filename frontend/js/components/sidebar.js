@@ -1,12 +1,6 @@
-// js/components/sidebar.js
-
-/**
- * Генерация пунктов меню
- */
 function getMenuItems(role) {
   const items = [];
 
-  // Общие пункты
   items.push({ textKey: 'menu.news', href: '/pages/public/news.html' });
   items.push({ textKey: 'menu.conferences-list', href: '/pages/public/conferences-list.html' });
 
@@ -26,9 +20,6 @@ function getMenuItems(role) {
   return items;
 }
 
-/**
- * Рендер меню
- */
 function renderMenu(role) {
   const menuEl = document.getElementById('sidebar-menu');
   if (!menuEl) return;
@@ -61,9 +52,6 @@ function renderMenu(role) {
   }
 }
 
-/**
- * Открыть/закрыть меню
- */
 export function openSidebar() {
   document.getElementById('sidebar')?.classList.remove('sidebar-closed');
   document.getElementById('sidebar')?.classList.add('sidebar-open');
@@ -76,12 +64,8 @@ export function closeSidebar() {
   document.getElementById('sidebar-overlay')?.classList.add('overlay-hidden');
 }
 
-/**
- * Обновить меню и закрыть его
- */
 export function updateSidebar(role) {
   renderMenu(role);
-  // Меню остаётся в том же состоянии (открыто/закрыто), но контент обновляется
 }
 
 function handleLogout() {
@@ -94,10 +78,8 @@ function handleLogout() {
   }
 }
 
-// === Обработчики кнопок ===
 document.getElementById('open-sidebar-btn')?.addEventListener('click', openSidebar);
 document.getElementById('close-sidebar-btn')?.addEventListener('click', closeSidebar);
 document.getElementById('sidebar-overlay')?.addEventListener('click', closeSidebar);
 
-// Экспорт для глобального доступа (если нужно)
 window.sidebar = { openSidebar, closeSidebar, updateSidebar };

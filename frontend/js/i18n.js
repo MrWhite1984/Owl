@@ -41,7 +41,6 @@ window.switchLanguage = (lang) => {
   }
 };
 
-// ✅ Выполняем переводы ТОЛЬКО после полной загрузки DOM
 document.addEventListener('DOMContentLoaded', () => {
   loadTranslations().then(applyTranslations);
 });

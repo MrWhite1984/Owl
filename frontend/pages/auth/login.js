@@ -20,29 +20,25 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
         const { token, role, roles } = await res.json();
 
-        // Сохраняем токен всегда
         localStorage.setItem('authToken', token);
 
-        // Определяем итоговый массив ролей
         let userRoles = [];
         if (Array.isArray(roles)) {
             userRoles = roles;
         } else if (typeof role === 'string') {
             userRoles = [role];
         } else {
-            // Никаких ролей не передано — можно обработать как ошибку или оставить пустым
             userRoles = [];
         }
 
         localStorage.setItem('roles', JSON.stringify(userRoles));
 
-        // Если одна роль — сразу выбираем её
         if (userRoles.length === 1) {
             localStorage.setItem('selectedRole', userRoles[0]);
             window.location.href = '/';
         }
         else {
-            window.location.href = 'role-select.html'
+            window.location.href = '/role-select'
         }
     } catch (err) {
         errorEl.textContent = err.message || 'Ошибка подключения';

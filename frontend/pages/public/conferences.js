@@ -34,7 +34,7 @@ function formatDate(dateStr) {
  */
 function escapeHtml(text) {
   const div = document.createElement('div');
-  div.textContent = text;
+  div.textContent = text || '';
   return div.innerHTML;
 }
 
@@ -97,10 +97,12 @@ function renderAllConferences() {
         </div>
       `;
 
+      // ✅ Правильный переход с ID в URL
       card.addEventListener('click', () => {
-        window.__spa_conferenceId = conf.id;
-        if (window.core?.navigate) {
-          window.core.navigate('/conference');
+        if (window.core?.navigate && conf.id) {
+          window.core.navigate(`/conference/${conf.id}`);
+        } else {
+          console.warn('Не могу перейти: нет core или id');
         }
       });
 

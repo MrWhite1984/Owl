@@ -1,14 +1,14 @@
-// /pages/public/conference.js
-import { API_ROUTES } from '/js/config/api.js';
-export function init() {
-  'use strict';
+'use strict';
 
-  // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  // ✅ Удаляем предыдущий обработчик языка (чтобы избежать дублирования)
+import { API_ROUTES } from '/js/config/api.js';
+
+let currentConferenceData = null;
+
+export function init(params = {}) {
+  // Удаляем предыдущий обработчик языка
   if (window._conferenceLanguageHandler) {
     window.removeEventListener('languageChanged', window._conferenceLanguageHandler);
   }
-  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
   const contentEl = document.getElementById('conference-content');
   const loadingEl = document.getElementById('loading');
@@ -16,29 +16,42 @@ export function init() {
 
   if (!contentEl) return;
 
-  // Получаем ID из временной глобальной переменной
-  const conferenceId = window.__spa_conferenceId;
-  delete window.__spa_conferenceId;
+  // Получаем ID: приоритет — params (SPA), fallback — URL (прямой заход)
+  let conferenceId = params.id;
 
   if (!conferenceId) {
-    showError('Не указан ID конференции');
+    const url = window.location.pathname;
+    const cleanPath = url.split('?')[0].split('#')[0];
+    const parts = cleanPath.split('/').filter(Boolean);
+    conferenceId = parts[parts.length - 1]?.trim();
+  }
+
+  if (!conferenceId) {
+    showError('ID конференции не найден');
     return;
   }
 
-  // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  // ✅ Переменная для хранения данных (чтобы перерисовать при смене языка)
-  let currentConferenceData = null;
-  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  // Валидация формата GUID
+  const guidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+  if (!guidRegex.test(conferenceId)) {
+    console.warn('Неверный формат GUID:', conferenceId);
+    showError('Неверный формат ID конференции');
+    return;
+  }
 
+  console.log('Загрузка конференции с ID:', conferenceId);
   loadConference(conferenceId);
 
   async function loadConference(id) {
     contentEl.innerHTML = '';
-    errorEl.classList.add('hidden');
-    loadingEl.classList.remove('hidden');
+    if (errorEl) errorEl.classList.add('hidden');
+    if (loadingEl) loadingEl.classList.remove('hidden');
 
     try {
-      const response = await fetch(`${API_ROUTES.conferences.getConference}/${id}`, {
+      const url = `${API_ROUTES.conferences.getConference}/${id}`;
+      console.log('Запрос к API:', url);
+
+      const response = await fetch(url, {
         method: 'GET',
         headers: { 'Accept': 'application/json' }
       });
@@ -48,19 +61,17 @@ export function init() {
       }
 
       const data = await response.json();
-
-      // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-      // ✅ Сохраняем данные для повторного рендера
       currentConferenceData = data;
-      // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
       renderConference(data);
-
     } catch (err) {
       console.error('Ошибка загрузки конференции:', err);
-      showError(`Ошибка: ${err.message}`);
+      if (err instanceof TypeError) {
+        showError('Нет подключения к серверу');
+      } else {
+        showError('Ошибка загрузки данных конференции');
+      }
     } finally {
-      loadingEl.classList.add('hidden');
+      if (loadingEl) loadingEl.classList.add('hidden');
     }
   }
 
@@ -76,9 +87,10 @@ export function init() {
 
     const statusBadge = document.createElement('span');
     statusBadge.className = `badge ${data.isActive ? 'badge-success' : 'badge-neutral'} mt-2`;
+    const lang = localStorage.getItem('lang') || 'ru';
     statusBadge.textContent = data.isActive
-      ? (localStorage.getItem('lang') === 'ru' ? 'Активна' : 'Active')
-      : (localStorage.getItem('lang') === 'ru' ? 'Завершена' : 'Completed');
+      ? (lang === 'ru' ? 'Активна' : 'Active')
+      : (lang === 'ru' ? 'Завершена' : 'Completed');
 
     const metaContainer = document.createElement('div');
     metaContainer.className = 'space-y-2 text-sm text-gray-600';
@@ -91,7 +103,7 @@ export function init() {
       collectionUrlHtml = `
         <p>
           <strong data-i18n="conference.collection-url">Сборник статей:</strong>
-          <a href="${escapeHtml(data.collectionUrl)}" target="_blank" class="link link-primary ml-1">${escapeHtml(data.collectionUrl)}</a>
+          <a href="${escapeHtml(data.collectionUrl)}" target="_blank" rel="noopener noreferrer" class="link link-primary ml-1">${escapeHtml(data.collectionUrl)}</a>
         </p>
       `;
     }
@@ -99,12 +111,15 @@ export function init() {
     const maxArticles = document.createElement('p');
     maxArticles.innerHTML = `<strong data-i18n="conference.max-articles">Макс. статей на автора:</strong> ${data.maxArticlesPerAuthor || 0}`;
 
-    const onlineDefence = document.createElement('p');
-    onlineDefence.innerHTML = `<strong data-i18n="conference.online-defence">Онлайн-защита:</strong> ${data.allowOnlineDefence ? 'Да' : 'Нет'}`;
+    const onlineDefenceValue = data.allowOnlineDefence
+      ? (localStorage.getItem('lang') === 'ru' ? 'Да' : 'Yes')
+      : (localStorage.getItem('lang') === 'ru' ? 'Нет' : 'No');
 
+    const onlineDefence = document.createElement('p');
+    onlineDefence.innerHTML = `<strong data-i18n="conference.online-defence">Онлайн-защита:</strong> ${onlineDefenceValue}`;
     metaContainer.append(
       startDate,
-      ...collectionUrlHtml ? [document.createRange().createContextualFragment(collectionUrlHtml)] : [],
+      ...(collectionUrlHtml ? [createFragment(collectionUrlHtml)] : []),
       maxArticles,
       onlineDefence
     );
@@ -112,10 +127,10 @@ export function init() {
     const sectionsContainer = document.createElement('div');
     sectionsContainer.className = 'mt-8';
 
-    if (data.sectionItems && data.sectionItems.length > 0) {
+    if (data.sectionItems?.length > 0) {
       const sectionsTitle = document.createElement('h3');
       sectionsTitle.className = 'text-xl font-medium mb-4';
-      sectionsTitle.textContent = localStorage.getItem('lang') === 'ru' ? 'Секции' : 'Sections';
+      sectionsTitle.textContent = lang === 'ru' ? 'Секции' : 'Sections';
       sectionsContainer.appendChild(sectionsTitle);
 
       const sectionsList = document.createElement('div');
@@ -129,7 +144,7 @@ export function init() {
         sectionTitle.className = 'text-lg font-semibold';
         sectionTitle.textContent = section.title || 'Без названия';
 
-        if (section.projectsItems && section.projectsItems.length > 0) {
+        if (section.projectsItems?.length > 0) {
           const projectsList = document.createElement('div');
           projectsList.className = 'mt-3 space-y-3 ml-2';
 
@@ -144,25 +159,25 @@ export function init() {
             const participantsList = document.createElement('div');
             participantsList.className = 'mt-2 text-sm';
 
-            if (project.projectParticipiants && project.projectParticipiants.length > 0) {
+            if (project.projectParticipiants?.length > 0) {
               const participantsTitle = document.createElement('p');
               participantsTitle.className = 'font-medium mb-1';
-              participantsTitle.textContent = localStorage.getItem('lang') === 'ru' ? 'Участники:' : 'Participants:';
+              participantsTitle.textContent = lang === 'ru' ? 'Участники:' : 'Participants:';
               participantsList.appendChild(participantsTitle);
 
               const participants = document.createElement('ul');
               participants.className = 'list-disc list-inside space-y-1';
 
               project.projectParticipiants.forEach(participant => {
-                const person = participant.personShortItem;
+                const person = participant.personShortItem || {};
                 const fullName = [
-                  person.surname,
-                  person.name.charAt(0) + '.',
-                  person.patronymic?.charAt(0) + '.' // ✅ защищаемся от null/undefined
+                  person.surname || '',
+                  person.name ? person.name.charAt(0) + '.' : '',
+                  person.patronymic ? person.patronymic.charAt(0) + '.' : ''
                 ].filter(Boolean).join(' ') || '—';
 
                 const role = participant.isScientificSupervisor
-                  ? (localStorage.getItem('lang') === 'ru' ? ' (научный руководитель)' : ' (supervisor)')
+                  ? (lang === 'ru' ? ' (научный руководитель)' : ' (supervisor)')
                   : '';
 
                 const li = document.createElement('li');
@@ -174,7 +189,7 @@ export function init() {
             } else {
               const noParticipants = document.createElement('p');
               noParticipants.className = 'text-gray-500 italic';
-              noParticipants.textContent = localStorage.getItem('lang') === 'ru' ? 'Нет участников' : 'No participants';
+              noParticipants.textContent = lang === 'ru' ? 'Нет участников' : 'No participants';
               participantsList.appendChild(noParticipants);
             }
 
@@ -186,7 +201,7 @@ export function init() {
         } else {
           const noProjects = document.createElement('p');
           noProjects.className = 'text-gray-500 italic mt-2 ml-2';
-          noProjects.textContent = localStorage.getItem('lang') === 'ru' ? 'Нет проектов' : 'No projects';
+          noProjects.textContent = lang === 'ru' ? 'Нет проектов' : 'No projects';
           sectionCard.append(sectionTitle, noProjects);
         }
 
@@ -197,7 +212,7 @@ export function init() {
     } else {
       const noSections = document.createElement('p');
       noSections.className = 'text-gray-500 italic mt-4';
-      noSections.textContent = localStorage.getItem('lang') === 'ru' ? 'Нет секций' : 'No sections';
+      noSections.textContent = lang === 'ru' ? 'Нет секций' : 'No sections';
       sectionsContainer.appendChild(noSections);
     }
 
@@ -209,40 +224,50 @@ export function init() {
     }
   }
 
-  // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  // ✅ Обработчик смены языка
+  // Обработчик смены языка
   const onLanguageChange = () => {
     if (currentConferenceData) {
-      renderConference(currentConferenceData); // Перерисовываем с новым языком
+      renderConference(currentConferenceData);
     }
   };
 
   window._conferenceLanguageHandler = onLanguageChange;
   window.addEventListener('languageChanged', onLanguageChange);
-  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+}
 
-  function formatDate(dateStr) {
-    if (!dateStr) return '';
-    const date = new Date(dateStr);
-    const lang = localStorage.getItem('lang') || 'ru';
-    return date.toLocaleDateString(lang, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  }
+// Вспомогательные функции
+function formatDate(dateStr) {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  const lang = localStorage.getItem('lang') || 'ru';
+  return date.toLocaleDateString(lang, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+}
 
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text || '';
+  return div.innerHTML;
+}
 
-  function showError(message) {
+function createFragment(htmlStr) {
+  return document.createRange().createContextualFragment(htmlStr);
+}
+
+function showError(message) {
+  const errorEl = document.getElementById('error');
+  const loadingEl = document.getElementById('loading');
+
+  if (errorEl) {
     errorEl.textContent = message;
     errorEl.classList.remove('hidden');
+  }
+  if (loadingEl) {
     loadingEl.classList.add('hidden');
   }
 }

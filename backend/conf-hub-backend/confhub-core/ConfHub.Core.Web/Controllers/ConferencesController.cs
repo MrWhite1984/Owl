@@ -35,7 +35,7 @@ namespace ConfHub.Core.Api.Controllers
             }
         }
 
-        [HttpGet("get-full-conference-data/{id}")]
+        [HttpGet("get-full-conference-data/{id:guid}")]
         public async Task<ActionResult<FullConferenceDataItem>> GetFullConferenceDataItem(Guid id)
         {
             if (!ModelState.IsValid)

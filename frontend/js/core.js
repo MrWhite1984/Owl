@@ -1,8 +1,4 @@
-// frontend/js/core.js
-
-// Сохраняем оригинальный body.className и innerHTML при старте
 let originalBodyClassName = '';
-let originalBodyContent = '';
 
 const core = {
   routeMap: {
@@ -10,10 +6,10 @@ const core = {
     '/news': { fragment: '/pages/public/news.html', pageName: 'news' },
     '/news/create': { fragment: '/pages/news/create-news.html', pageName: 'create_news' },
     '/conferences': { fragment: '/pages/public/conferences-list.html', pageName: 'conferences_page' },
-    '/conferences/create': { fragment: '', pageName: 'create_conference_page' },
-    '/conference': { fragment: '/pages/public/conference.html', pageName: 'conference' },
+    '/conferences/create': { fragment: '/pages/conferences/create-conference.html', pageName: 'create_conference_page' },
     '/login': { fragment: '/pages/auth/login.html', pageName: 'login' },
     '/register': { fragment: '/pages/auth/register.html', pageName: 'register' },
+    '/role-select': {fragment: '/pages/auth/role-select.html', pageName: 'role_select'},
   },
 
   pageInitializers: {
@@ -29,6 +25,10 @@ const core = {
       const module = await import('../pages/public/conferences.js');
       module.init?.();
     },
+    create_conference_page: async () => {
+      const module = await import('../pages/conferences/create-conference.js');
+      module.init?.();
+    },
     conference: async () => {
       const module = await import('../pages/public/conference.js');
       module.init?.();
@@ -40,19 +40,21 @@ const core = {
     register: async () => {
       const module = await import('../pages/auth/register.js');
       module.init?.();
-    }
+    },
+    role_select: async () => {
+      const module = await import('../pages/auth/role-select.js');
+      module.init?.();
+    },
   },
 
   async loadPage(url) {
     history.pushState({ url }, '', url);
 
-    const isAuthPage = url === '/login' || url === '/register';
+    const isAuthPage = url === '/login' || url === '/register' || url === '/role-select';
 
     if (isAuthPage) {
-      // Сохраняем оригинальное состояние при первом уходе
       if (!originalBodyClassName) {
         originalBodyClassName = document.body.className;
-        originalBodyContent = document.getElementById('page-content')?.innerHTML || '';
       }
 
       try {
@@ -60,7 +62,7 @@ const core = {
         if (!res.ok) throw new Error('Не удалось загрузить страницу');
         const html = await res.text();
         document.body.innerHTML = html;
-        document.body.classList.remove('flex', 'flex-col'); // на всякий случай
+        document.body.className = 'min-h-screen bg-base-100 flex items-center justify-center p-4';
 
         const initFn = this.pageInitializers[this.routeMap[url].pageName];
         if (typeof initFn === 'function') {
@@ -72,41 +74,52 @@ const core = {
         }
       } catch (err) {
         document.body.innerHTML = `<div class="min-h-screen flex items-center justify-center text-red-500 p-4">${err.message}</div>`;
+        document.body.className = 'min-h-screen flex items-center justify-center p-4';
       }
     } else {
-      // Восстанавливаем SPA-режим
       document.body.className = originalBodyClassName || 'min-h-screen flex flex-col';
 
-      if (!document.getElementById('page-content')) {
-        location.reload(); // fallback
+      const contentEl = document.getElementById('page-content');
+      if (!contentEl) {
+        location.reload();
         return;
       }
 
       let route = this.routeMap[url];
+
       if (!route && url.startsWith('/conference/')) {
-        route = { fragment: '/pages/public/conference.html', pageName: 'conference' };
+        const cleanUrl = url.split('?')[0].split('#')[0];
+        const id = cleanUrl.substring('/conference/'.length).split('/')[0];
+
+        if (id && id.trim() !== '') {
+          route = {
+            fragment: '/pages/public/conference.html',
+            pageName: 'conference',
+            params: { id: id.trim() }
+          };
+        }
       }
 
       if (!route) {
-        document.getElementById('page-content').innerHTML = '<div class="alert alert-error">Страница не найдена</div>';
+        contentEl.innerHTML = '<div class="alert alert-error">Страница не найдена</div>';
         return;
       }
 
       try {
         const res = await fetch(route.fragment);
         if (!res.ok) throw new Error('Не удалось загрузить страницу');
-        document.getElementById('page-content').innerHTML = await res.text();
+        contentEl.innerHTML = await res.text();
 
         const initFn = this.pageInitializers[route.pageName];
         if (typeof initFn === 'function') {
-          await initFn();
+          await initFn(route.params || {});
         }
 
         if (window.applyTranslations) {
-          window.applyTranslations(document.getElementById('page-content'));
+          window.applyTranslations(contentEl);
         }
       } catch (err) {
-        document.getElementById('page-content').innerHTML = `<div class="alert alert-error">${err.message}</div>`;
+        contentEl.innerHTML = `<div class="alert alert-error">${err.message}</div>`;
       }
     }
   },
@@ -141,7 +154,6 @@ const core = {
   }
 };
 
-// Сохраняем исходное состояние
 document.addEventListener('DOMContentLoaded', () => {
   originalBodyClassName = document.body.className;
   const url = window.location.pathname + window.location.search;

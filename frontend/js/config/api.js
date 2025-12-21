@@ -16,6 +16,6 @@ export const API_ROUTES = {
   },
   conferences: {
     getConferences: `${API_BASE}/Conferences/get-conferences-list`,
-    getConference: `${API_BASE}/Conferences/get-full-conference-data/`
+    getConference: `${API_BASE}/Conferences/get-full-conference-data`
   }
 };
