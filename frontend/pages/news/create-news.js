@@ -1,5 +1,5 @@
 // pages/news/create-news.js
-
+import { API_ROUTES } from '/js/config/api.js';
 export function init() {
   'use strict';
 
@@ -30,7 +30,7 @@ export function init() {
     }
 
     try {
-      const response = await fetch('https://localhost:7077/api/News/create-news', {
+      const response = await fetch(API_ROUTES.news.create, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,7 +42,7 @@ export function init() {
       if (response.ok) {
         alert('Новость успешно создана!');
         // Возврат к списку новостей — через загрузку страницы
-        window.core?.loadPage('/pages/public/news.html');
+        window.core?.loadPage('/news');
       } else {
         const errorText = await response.text();
         alert('Ошибка: ' + (errorText || 'Неизвестная ошибка'));
@@ -55,6 +55,6 @@ export function init() {
 
   // === Обработчик отмены ===
   cancelBtn.addEventListener('click', () => {
-    window.core?.loadPage('/pages/public/news.html');
+    window.core?.loadPage('/news');
   });
 }

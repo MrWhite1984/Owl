@@ -42,6 +42,7 @@
   "conferences.status": "Статус",
   "conferences.created-at": "Дата начала",
   "conferences.create-conference-button": "Создать конференцию",
+  "conferences.empty": "Нет доступных конференций",
   "conference.title": "О конференции",
   "conference.start-date": "Дата начала",
   "conference.collection-url": "Ссылка на сборник",

@@ -146,5 +146,21 @@ app.UseCors("AllowLocalFrontend");
 
 app.MapControllers();
 
+app.MapGet("/login", async context =>
+{
+    context.Response.ContentType = "text/html; charset=utf-8";
+    var filePath = Path.Combine(builder.Environment.WebRootPath, "login.html");
+    if (File.Exists(filePath))
+    {
+        await context.Response.SendFileAsync(filePath);
+    }
+    else
+    {
+        context.Response.StatusCode = 404;
+    }
+});
+
+app.MapFallbackToFile("index.html");
+
 app.Run();
 

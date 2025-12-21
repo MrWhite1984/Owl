@@ -42,6 +42,7 @@
   "conferences.status": "Status",
   "conferences.created-at": "Start date",
   "conferences.create-conference-button": "Create conference",
+  "conferences.empty": "There are no conferences available",
   "conference.title": "About the conference",
   "conference.start-date": "Start date",
   "conference.collection-url": "Link to the collection",

@@ -1,17 +1,4 @@
-<!DOCTYPE html>
-<html lang="ru">
-
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Регистрация — ConfHub</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/assets/css/theme.css" />
-    <script src="/js/i18n.js" defer></script>
-</head>
-
-<body class="min-h-screen bg-base-100 flex items-center justify-center p-4">
+<div class="min-h-screen bg-base-100 flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-base-100 rounded-lg shadow p-6">
         <h1 class="text-2xl font-bold mb-6 text-center" data-i18n="register.title">Регистрация</h1>
 
@@ -49,52 +36,4 @@
             </div>
         </form>
     </div>
-
-    <script>
-        import { API_ROUTES } from '/js/config/api.js';
-        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const formData = {
-                surname: document.getElementById('surname').value.trim(),
-                name: document.getElementById('name').value.trim(),
-                patronymic: document.getElementById('patronymic').value.trim(),
-                educationalInstitution: document.getElementById('educationalInstitution').value.trim(),
-                jobTitle: document.getElementById('jobTitle').value.trim(),
-                city: document.getElementById('city').value.trim(),
-                phone: document.getElementById('phone').value.trim(),
-                email: document.getElementById('email').value.trim(),
-                isVerified: false,
-                elibraryProfileUrl: document.getElementById('elibraryProfileUrl').value.trim() || null,
-                password: document.getElementById('password').value
-            };
-
-            const errorEl = document.getElementById('error');
-            errorEl.textContent = '';
-
-            try {
-                const res = await fetch(API_ROUTES.auth.registration, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
-                });
-
-                if (!res.ok) {
-                    const errorData = await res.json().catch(() => ({}));
-                    throw new Error(errorData?.message || 'Ошибка при регистрации');
-                }
-
-                const { token, role } = await res.json();
-                localStorage.setItem('authToken', token);
-                localStorage.setItem('roles', JSON.stringify([role]));
-                localStorage.setItem('selectedRole', role);
-
-                window.location.href = '/';
-            } catch (err) {
-                errorEl.textContent = err.message || 'Не удалось зарегистрироваться';
-            }
-        });
-    </script>
-</body>
-
-</html>
+</div>

@@ -45,9 +45,9 @@ const Auth = {
             updateSidebarMenu(localStorage.getItem("selectedRole"));
         }
         if (typeof core !== 'undefined' && core.loadPage) {
-            core.loadPage('/pages/public/news.html');
+            core.loadPage('/');
         } else {
-            window.location.href = '/pages/public/news.html';
+            window.location.href = '/';
         }
     },
 

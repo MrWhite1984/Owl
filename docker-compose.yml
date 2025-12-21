@@ -25,6 +25,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:8080
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=confhub;Username=app;Password=password
+      - JWT__ISSUER=ConfHub
+      - JWT__AUDIENCE=ConfHubUsers
+      - JWT__KEY=your-super-long-secret-key-must-be-at-least-32-characters-long
     expose:
       - "8080"
     depends_on:

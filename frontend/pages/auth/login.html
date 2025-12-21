@@ -1,16 +1,4 @@
-<!DOCTYPE html>
-<html lang="ru">
-
-<head>
-    <meta charset="UTF-8" />
-    <title>Вход — ConfHub</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/assets/css/theme.css" />
-    <script src="/js/i18n.js"></script>
-</head>
-
-<body class="min-h-screen bg-base-100 flex items-center justify-center p-4">
+<div class="min-h-screen bg-base-100 flex items-center justify-center p-4">
     <div class="card w-full max-w-md bg-base-100 shadow-xl">
         <div class="card-body">
             <h1 class="card-title" data-i18n="login.title">С возвращением</h1>
@@ -22,66 +10,10 @@
                 <button type="submit" data-i18n="login.submit" class="btn btn-primary w-full">Войти</button>
             </form>
             <div class="text-center mt-4">
-                <span data-i18n="login.noAccount">Нет аккаунта?</span> <a href="/pages/auth/register.html"
+                <span data-i18n="login.noAccount">Нет аккаунта?</span> <a href="/register"
                     data-i18n="login.register" class="link link-primary">Зарегистрироваться</a>
             </div>
             <div id="error" class="text-red-500 text-sm mt-2 min-h-[20px]"></div>
         </div>
     </div>
-
-    <script type="module">
-        import { API_ROUTES } from '/js/config/api.js';
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const errorEl = document.getElementById('error');
-            errorEl.textContent = '';
-
-            try {
-                const res = await fetch(API_ROUTES.auth.login, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
-
-                if (!res.ok) {
-                    const err = await res.json().catch(() => ({}));
-                    throw new Error(err.message || 'Неверный email или пароль');
-                }
-
-                const { token, role, roles } = await res.json();
-
-                // Сохраняем токен всегда
-                localStorage.setItem('authToken', token);
-
-                // Определяем итоговый массив ролей
-                let userRoles = [];
-                if (Array.isArray(roles)) {
-                    userRoles = roles;
-                } else if (typeof role === 'string') {
-                    userRoles = [role];
-                } else {
-                    // Никаких ролей не передано — можно обработать как ошибку или оставить пустым
-                    userRoles = [];
-                }
-
-                localStorage.setItem('roles', JSON.stringify(userRoles));
-
-                // Если одна роль — сразу выбираем её
-                if (userRoles.length === 1) {
-                    localStorage.setItem('selectedRole', userRoles[0]);
-                    window.location.href = '/';
-                }
-                else {
-                    window.location.href = 'role-select.html'
-                }
-            } catch (err) {
-                errorEl.textContent = err.message || 'Ошибка подключения';
-            }
-        });
-        switchLanguage(localStorage.getItem("lang"));
-    </script>
-</body>
-
-</html>
+</div>

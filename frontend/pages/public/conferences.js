@@ -1,6 +1,7 @@
-// /pages/public/conferences.js
+import { API_ROUTES } from '/js/config/api.js';
 
 let cachedConferences = [];
+let isLoading = false;
 
 /**
  * Преобразует статус (isActive) в человекочитаемый вид
@@ -29,74 +30,85 @@ function formatDate(dateStr) {
 }
 
 /**
- * Рендерит список конференций из кэша
+ * Экранирование HTML
  */
-function renderConferences(conferences) {
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+/**
+ * Класс бейджа статуса
+ */
+function getStatusBadgeClass(isActive) {
+  return isActive ? 'badge-success' : 'badge-neutral';
+}
+
+/**
+ * Полная перерисовка списка конференций (включая кнопку)
+ */
+function renderAllConferences() {
   const listEl = document.getElementById('conferences-list');
   if (!listEl) return;
 
-  listEl.innerHTML = '';
-
-
-
-  if (!Array.isArray(conferences) || conferences.length === 0) {
-    listUl.innerHTML = '<p data-i18n="conferences.empty">Нет доступных конференций</p>';
-    return;
-  }
-
+  // 🔥 Полная очистка — как в news.js
   listEl.innerHTML = '';
 
   const selectedRole = localStorage.getItem("selectedRole");
 
-  // Кнопка создания
+  // ВСЕГДА отображаем кнопку, если роль подходит
   if (selectedRole === "ADMIN") {
-    const addNewsBtn = document.createElement('button');
-    addNewsBtn.innerText = 'Создать конференцию';
-    addNewsBtn.setAttribute('data-i18n', 'conferences.create-conference-button');
-    addNewsBtn.classList.add('btn');
-    addNewsBtn.addEventListener('click', async () => {
-      try {
-        await core.loadPage('../pages/conferences/create-conference.html');
-      } catch (err) {
-        console.error('Failed to load page:', err);
-        document.getElementById('page-content').innerHTML = '<p>Ошибка загрузки страницы</p>';
+    const addBtn = document.createElement('button');
+    addBtn.innerText = 'Создать конференцию';
+    addBtn.setAttribute('data-i18n', 'conferences.create-conference-button');
+    addBtn.classList.add('btn', 'mb-4');
+    addBtn.addEventListener('click', () => {
+      if (window.core?.navigate) {
+        window.core.navigate('/conferences/create');
       }
     });
-    listEl.appendChild(addNewsBtn);
+    listEl.appendChild(addBtn);
   }
 
-  conferences.forEach(conf => {
-    const card = document.createElement('div');
-    card.className = 'card bg-base-100 shadow-md hover:shadow-lg transition-shadow cursor-pointer';
-    card.innerHTML = `
-      <div class="card-body p-4">
-        <h3 class="card-title text-lg font-bold">${escapeHtml(conf.title)}</h3>
-        <div class="text-sm space-y-1 mt-2">
-          <div>
-            <span class="font-medium" data-i18n="conferences.status">Статус:</span>
-            <span class="ml-1 badge ${getStatusBadgeClass(conf.isActive)}">${formatStatus(conf.isActive)}</span>
-          </div>
-          <div>
-            <span class="font-medium" data-i18n="conferences.created-at">Создана:</span>
-            <span class="ml-1">${formatDate(conf.startDate)}</span>
+  // Отображаем конференции
+  if (!Array.isArray(cachedConferences) || cachedConferences.length === 0) {
+    const emptyEl = document.createElement('p');
+    emptyEl.setAttribute('data-i18n', 'conferences.empty');
+    emptyEl.textContent = 'Нет доступных конференций';
+    listEl.appendChild(emptyEl);
+  } else {
+    cachedConferences.forEach(conf => {
+      const card = document.createElement('div');
+      card.className = 'card bg-base-100 shadow-md hover:shadow-lg transition-shadow cursor-pointer';
+      card.innerHTML = `
+        <div class="card-body p-4">
+          <h3 class="card-title text-lg font-bold">${escapeHtml(conf.title)}</h3>
+          <div class="text-sm space-y-1 mt-2">
+            <div>
+              <span class="font-medium" data-i18n="conferences.status">Статус:</span>
+              <span class="ml-1 badge ${getStatusBadgeClass(conf.isActive)}">${formatStatus(conf.isActive)}</span>
+            </div>
+            <div>
+              <span class="font-medium" data-i18n="conferences.created-at">Создана:</span>
+              <span class="ml-1">${formatDate(conf.startDate)}</span>
+            </div>
           </div>
         </div>
-      </div>
-    `;
+      `;
 
-    card.addEventListener('click', () => {
-      if (window.core?.loadPage) {
-        // Сохраняем ID во временную глобальную переменную
+      card.addEventListener('click', () => {
         window.__spa_conferenceId = conf.id;
-        // Загружаем страницу БЕЗ изменения URL
-        window.core.loadPage('/pages/public/conference.html');
-      }
+        if (window.core?.navigate) {
+          window.core.navigate('/conference');
+        }
+      });
+
+      listEl.appendChild(card);
     });
+  }
 
-    listEl.appendChild(card);
-  });
-
-  // Применить переводы для статических надписей («Статус», «Создана»)
+  // Применяем переводы
   if (typeof window.applyTranslations === 'function') {
     window.applyTranslations(listEl);
   }
@@ -111,11 +123,16 @@ export function init() {
 
   if (!listEl) return;
 
-  listEl.innerHTML = '';
-  errorEl.classList.add('hidden');
-  loadingEl.classList.remove('hidden');
+  // Отображаем UI немедленно (кнопка появится сразу)
+  renderAllConferences();
 
-  fetch('https://localhost:7077/api/Conferences/get-conferences-list', {
+  if (errorEl) errorEl.classList.add('hidden');
+  if (loadingEl) loadingEl.classList.remove('hidden');
+
+  if (isLoading) return;
+  isLoading = true;
+
+  fetch(API_ROUTES.conferences.getConferences, {
     method: 'GET',
     headers: { 'Accept': 'application/json' }
   })
@@ -125,30 +142,20 @@ export function init() {
     })
     .then(data => {
       cachedConferences = data.conferenceItems || [];
-      renderConferences(cachedConferences);
+      renderAllConferences();
     })
     .catch(err => {
       console.error('Ошибка загрузки конференций:', err);
-      errorEl.textContent = `Ошибка: ${err.message}`;
-      errorEl.classList.remove('hidden');
+      if (errorEl) {
+        errorEl.textContent = `Ошибка: ${err.message}`;
+        errorEl.classList.remove('hidden');
+      }
     })
     .finally(() => {
-      loadingEl.classList.add('hidden');
+      isLoading = false;
+      if (loadingEl) loadingEl.classList.add('hidden');
     });
 
-  // 🔁 Обновлять при смене языка
-  window.addEventListener('languageChanged', () => {
-    renderConferences(cachedConferences);
-  });
-}
-
-// Вспомогательные функции
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-function getStatusBadgeClass(isActive) {
-  return isActive ? 'badge-success' : 'badge-neutral';
+  // Обновлять при смене языка
+  window.addEventListener('languageChanged', renderAllConferences);
 }

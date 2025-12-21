@@ -70,7 +70,7 @@
                     <li><a onclick="switchLanguage('en')">ENG English</a></li>
                 </ul>
             </div>
-            <a class="btn btn-outline btn-sm" data-i18n="login.submit" href="pages/auth/login.html">Вход</a>
+            <a class="btn btn-outline btn-sm" data-i18n="login.submit" href="/login">Вход</a>
         </div>
 
         <!-- Правая часть: для авторизованных -->
@@ -189,8 +189,8 @@
     function getMenuItems(role) {
         const items = [];
 
-        items.push({ textKey: 'menu.news', href: '/pages/public/news.html' });
-        items.push({ textKey: 'menu.conferences-list', href: '/pages/public/conferences-list.html' });
+        items.push({ textKey: 'menu.news', href: '/news' });
+        items.push({ textKey: 'menu.conferences-list', href: '/conferences' });
 
         if (role) {
 
@@ -226,7 +226,7 @@
                     updateHeader();
                     updateSidebarMenu(null);
                     toggleSidebar();
-                    core.loadPage('/pages/public/news.html');
+                    core.loadPage('/news');
                 });
             } else {
                 btn.addEventListener('click', () => {
@@ -260,7 +260,7 @@
     window.addEventListener('DOMContentLoaded', async () => {
         let pagePath;
         if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-            pagePath = '/pages/public/news.html';
+            pagePath = '/news';
         } else {
             pagePath = window.location.pathname;
         }

@@ -1,5 +1,5 @@
 // /pages/public/conference.js
-
+import { API_ROUTES } from '/js/config/api.js';
 export function init() {
   'use strict';
 
@@ -38,7 +38,7 @@ export function init() {
     loadingEl.classList.remove('hidden');
 
     try {
-      const response = await fetch(`https://localhost:7077/api/Conferences/get-full-conference-data/${id}`, {
+      const response = await fetch(`${API_ROUTES.conferences.getConference}/${id}`, {
         method: 'GET',
         headers: { 'Accept': 'application/json' }
       });
